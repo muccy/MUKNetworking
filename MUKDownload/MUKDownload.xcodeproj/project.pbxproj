@@ -1,0 +1,402 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		065668421517A85A00DA53AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 065668411517A85A00DA53AA /* Foundation.framework */; };
+		065668481517A85A00DA53AA /* MUKDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 065668471517A85A00DA53AA /* MUKDownload.m */; };
+		065668501517A85B00DA53AA /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0656684F1517A85A00DA53AA /* SenTestingKit.framework */; };
+		065668521517A85B00DA53AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 065668511517A85B00DA53AA /* UIKit.framework */; };
+		065668531517A85B00DA53AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 065668411517A85A00DA53AA /* Foundation.framework */; };
+		065668561517A85B00DA53AA /* libMUKDownload.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0656683E1517A85A00DA53AA /* libMUKDownload.a */; };
+		0656685C1517A85B00DA53AA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0656685A1517A85B00DA53AA /* InfoPlist.strings */; };
+		0656685F1517A85B00DA53AA /* MUKDownloadTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0656685E1517A85B00DA53AA /* MUKDownloadTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		065668541517A85B00DA53AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 065668351517A85A00DA53AA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0656683D1517A85A00DA53AA;
+			remoteInfo = MUKDownload;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0656683E1517A85A00DA53AA /* libMUKDownload.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMUKDownload.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		065668411517A85A00DA53AA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		065668451517A85A00DA53AA /* MUKDownload-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MUKDownload-Prefix.pch"; sourceTree = "<group>"; };
+		065668461517A85A00DA53AA /* MUKDownload.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDownload.h; sourceTree = "<group>"; };
+		065668471517A85A00DA53AA /* MUKDownload.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKDownload.m; sourceTree = "<group>"; };
+		0656684E1517A85A00DA53AA /* MUKDownloadTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MUKDownloadTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0656684F1517A85A00DA53AA /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		065668511517A85B00DA53AA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		065668591517A85B00DA53AA /* MUKDownloadTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MUKDownloadTests-Info.plist"; sourceTree = "<group>"; };
+		0656685B1517A85B00DA53AA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0656685D1517A85B00DA53AA /* MUKDownloadTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDownloadTests.h; sourceTree = "<group>"; };
+		0656685E1517A85B00DA53AA /* MUKDownloadTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKDownloadTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0656683B1517A85A00DA53AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				065668421517A85A00DA53AA /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0656684A1517A85A00DA53AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				065668501517A85B00DA53AA /* SenTestingKit.framework in Frameworks */,
+				065668521517A85B00DA53AA /* UIKit.framework in Frameworks */,
+				065668531517A85B00DA53AA /* Foundation.framework in Frameworks */,
+				065668561517A85B00DA53AA /* libMUKDownload.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		065668331517A85A00DA53AA = {
+			isa = PBXGroup;
+			children = (
+				065668431517A85A00DA53AA /* MUKDownload */,
+				065668571517A85B00DA53AA /* MUKDownloadTests */,
+				065668401517A85A00DA53AA /* Frameworks */,
+				0656683F1517A85A00DA53AA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0656683F1517A85A00DA53AA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0656683E1517A85A00DA53AA /* libMUKDownload.a */,
+				0656684E1517A85A00DA53AA /* MUKDownloadTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		065668401517A85A00DA53AA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				065668411517A85A00DA53AA /* Foundation.framework */,
+				0656684F1517A85A00DA53AA /* SenTestingKit.framework */,
+				065668511517A85B00DA53AA /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		065668431517A85A00DA53AA /* MUKDownload */ = {
+			isa = PBXGroup;
+			children = (
+				065668461517A85A00DA53AA /* MUKDownload.h */,
+				065668471517A85A00DA53AA /* MUKDownload.m */,
+				065668441517A85A00DA53AA /* Supporting Files */,
+			);
+			path = MUKDownload;
+			sourceTree = "<group>";
+		};
+		065668441517A85A00DA53AA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				065668451517A85A00DA53AA /* MUKDownload-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		065668571517A85B00DA53AA /* MUKDownloadTests */ = {
+			isa = PBXGroup;
+			children = (
+				0656685D1517A85B00DA53AA /* MUKDownloadTests.h */,
+				0656685E1517A85B00DA53AA /* MUKDownloadTests.m */,
+				065668581517A85B00DA53AA /* Supporting Files */,
+			);
+			path = MUKDownloadTests;
+			sourceTree = "<group>";
+		};
+		065668581517A85B00DA53AA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				065668591517A85B00DA53AA /* MUKDownloadTests-Info.plist */,
+				0656685A1517A85B00DA53AA /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		0656683C1517A85A00DA53AA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		0656683D1517A85A00DA53AA /* MUKDownload */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 065668621517A85B00DA53AA /* Build configuration list for PBXNativeTarget "MUKDownload" */;
+			buildPhases = (
+				0656683A1517A85A00DA53AA /* Sources */,
+				0656683B1517A85A00DA53AA /* Frameworks */,
+				0656683C1517A85A00DA53AA /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MUKDownload;
+			productName = MUKDownload;
+			productReference = 0656683E1517A85A00DA53AA /* libMUKDownload.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		0656684D1517A85A00DA53AA /* MUKDownloadTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 065668651517A85B00DA53AA /* Build configuration list for PBXNativeTarget "MUKDownloadTests" */;
+			buildPhases = (
+				065668491517A85A00DA53AA /* Sources */,
+				0656684A1517A85A00DA53AA /* Frameworks */,
+				0656684B1517A85A00DA53AA /* Resources */,
+				0656684C1517A85A00DA53AA /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				065668551517A85B00DA53AA /* PBXTargetDependency */,
+			);
+			name = MUKDownloadTests;
+			productName = MUKDownloadTests;
+			productReference = 0656684E1517A85A00DA53AA /* MUKDownloadTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		065668351517A85A00DA53AA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = 065668381517A85A00DA53AA /* Build configuration list for PBXProject "MUKDownload" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 065668331517A85A00DA53AA;
+			productRefGroup = 0656683F1517A85A00DA53AA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0656683D1517A85A00DA53AA /* MUKDownload */,
+				0656684D1517A85A00DA53AA /* MUKDownloadTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0656684B1517A85A00DA53AA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0656685C1517A85B00DA53AA /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0656684C1517A85A00DA53AA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0656683A1517A85A00DA53AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				065668481517A85A00DA53AA /* MUKDownload.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		065668491517A85A00DA53AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0656685F1517A85B00DA53AA /* MUKDownloadTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		065668551517A85B00DA53AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0656683D1517A85A00DA53AA /* MUKDownload */;
+			targetProxy = 065668541517A85B00DA53AA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		0656685A1517A85B00DA53AA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0656685B1517A85B00DA53AA /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		065668601517A85B00DA53AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		065668611517A85B00DA53AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		065668631517A85B00DA53AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/MUKDownload.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MUKDownload/MUKDownload-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		065668641517A85B00DA53AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/MUKDownload.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MUKDownload/MUKDownload-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		065668661517A85B00DA53AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MUKDownload/MUKDownload-Prefix.pch";
+				INFOPLIST_FILE = "MUKDownloadTests/MUKDownloadTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		065668671517A85B00DA53AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MUKDownload/MUKDownload-Prefix.pch";
+				INFOPLIST_FILE = "MUKDownloadTests/MUKDownloadTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		065668381517A85A00DA53AA /* Build configuration list for PBXProject "MUKDownload" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				065668601517A85B00DA53AA /* Debug */,
+				065668611517A85B00DA53AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		065668621517A85B00DA53AA /* Build configuration list for PBXNativeTarget "MUKDownload" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				065668631517A85B00DA53AA /* Debug */,
+				065668641517A85B00DA53AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		065668651517A85B00DA53AA /* Build configuration list for PBXNativeTarget "MUKDownloadTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				065668661517A85B00DA53AA /* Debug */,
+				065668671517A85B00DA53AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 065668351517A85A00DA53AA /* Project object */;
+}

@@ -1,3 +1,7 @@
+/**
+ This class provides basic wrapping to NSURLConnection
+ */
+
 #import <Foundation/Foundation.h>
 
 typedef void (^MUKURLConnectionCompletionHandler)(BOOL success, NSError *error);

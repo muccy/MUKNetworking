@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		065668421517A85A00DA53AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 065668411517A85A00DA53AA /* Foundation.framework */; };
-		065668481517A85A00DA53AA /* MUKDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 065668471517A85A00DA53AA /* MUKDownload.m */; };
 		065668501517A85B00DA53AA /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0656684F1517A85A00DA53AA /* SenTestingKit.framework */; };
 		065668521517A85B00DA53AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 065668511517A85B00DA53AA /* UIKit.framework */; };
 		065668531517A85B00DA53AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 065668411517A85A00DA53AA /* Foundation.framework */; };
 		065668561517A85B00DA53AA /* libMUKDownload.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0656683E1517A85A00DA53AA /* libMUKDownload.a */; };
 		0656685C1517A85B00DA53AA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0656685A1517A85B00DA53AA /* InfoPlist.strings */; };
 		0656685F1517A85B00DA53AA /* MUKDownloadTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0656685E1517A85B00DA53AA /* MUKDownloadTests.m */; };
+		065668681517A98500DA53AA /* MUKDownload.h in Headers */ = {isa = PBXBuildFile; fileRef = 065668461517A85A00DA53AA /* MUKDownload.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,7 +32,6 @@
 		065668411517A85A00DA53AA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		065668451517A85A00DA53AA /* MUKDownload-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MUKDownload-Prefix.pch"; sourceTree = "<group>"; };
 		065668461517A85A00DA53AA /* MUKDownload.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKDownload.h; sourceTree = "<group>"; };
-		065668471517A85A00DA53AA /* MUKDownload.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKDownload.m; sourceTree = "<group>"; };
 		0656684E1517A85A00DA53AA /* MUKDownloadTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MUKDownloadTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0656684F1517A85A00DA53AA /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		065668511517A85B00DA53AA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -98,7 +97,6 @@
 			isa = PBXGroup;
 			children = (
 				065668461517A85A00DA53AA /* MUKDownload.h */,
-				065668471517A85A00DA53AA /* MUKDownload.m */,
 				065668441517A85A00DA53AA /* Supporting Files */,
 			);
 			path = MUKDownload;
@@ -138,6 +136,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				065668681517A98500DA53AA /* MUKDownload.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,6 +150,7 @@
 				0656683A1517A85A00DA53AA /* Sources */,
 				0656683B1517A85A00DA53AA /* Frameworks */,
 				0656683C1517A85A00DA53AA /* Headers */,
+				065668691517A9EC00DA53AA /* Prepare Framework */,
 			);
 			buildRules = (
 			);
@@ -231,6 +231,20 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
+		065668691517A9EC00DA53AA /* Prepare Framework */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Prepare Framework";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A\"\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n\n# Link the \"Current\" version to \"A\"\nln -sfh A \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/Current\"\nln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Headers\"\nln -sfh \"Versions/Current/${PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# The -a ensures that the headers maintain the source modification date so that we don't constantly\n# cause propagating rebuilds of files that import these headers.\ncp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -238,7 +252,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				065668481517A85A00DA53AA /* MUKDownload.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,9 +289,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv7,
+					armv6,
+				);
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -292,7 +309,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				PUBLIC_HEADERS_FOLDER_PATH = Headers;
 				SDKROOT = iphoneos;
+				STRIP_STYLE = "non-global";
 			};
 			name = Debug;
 		};
@@ -300,16 +319,22 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv7,
+					armv6,
+				);
 				CLANG_ENABLE_OBJC_ARC = YES;
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				PUBLIC_HEADERS_FOLDER_PATH = Headers;
 				SDKROOT = iphoneos;
+				STRIP_STYLE = "non-global";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

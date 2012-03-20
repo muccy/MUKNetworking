@@ -24,8 +24,14 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-#import "MUKDownloadBaseTests.h"
+#import <SenTestingKit/SenTestingKit.h>
+#import "MUKTestURLProtocol.h"
 
-@interface MUKURLConnectionTests : MUKDownloadBaseTests
+@interface MUKDownloadBaseTests : SenTestCase
+
+- (void)registerTestURLProtocol;
+- (void)unregisterTestURLProtocol;
+
+- (BOOL)waitForCompletion:(BOOL *)done timeout:(NSTimeInterval)timeout;
 
 @end

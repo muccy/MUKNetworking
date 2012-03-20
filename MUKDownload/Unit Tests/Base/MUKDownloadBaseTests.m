@@ -26,6 +26,29 @@
 
 #import "MUKDownloadBaseTests.h"
 
-@interface MUKURLConnectionTests : MUKDownloadBaseTests
+@implementation MUKDownloadBaseTests
+
+- (void)registerTestURLProtocol {
+    [MUKTestURLProtocol resetParameters];
+    [NSURLProtocol registerClass:[MUKTestURLProtocol class]];
+}
+
+- (void)unregisterTestURLProtocol {
+    [NSURLProtocol unregisterClass:[MUKTestURLProtocol class]];
+}
+
+- (BOOL)waitForCompletion:(BOOL *)done timeout:(NSTimeInterval)timeout {
+    NSDate *timeoutDate = [NSDate dateWithTimeIntervalSinceNow:timeout];
+    
+    do {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:timeoutDate];
+        
+        if ([timeoutDate timeIntervalSinceNow] < 0.0) {
+            break;
+        }
+    } while (*done == NO);
+    
+    return *done;
+}
 
 @end

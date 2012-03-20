@@ -34,6 +34,7 @@
 		0685099E1518A12A00D450CA /* MUKTestURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 0685099D1518A12A00D450CA /* MUKTestURLProtocol.m */; };
 		068509A31518EFAE00D450CA /* MUKBufferedDownload.h in Headers */ = {isa = PBXBuildFile; fileRef = 068509A11518EFAE00D450CA /* MUKBufferedDownload.h */; };
 		068509A41518EFAE00D450CA /* MUKBufferedDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 068509A21518EFAE00D450CA /* MUKBufferedDownload.m */; };
+		068509A91518F4A800D450CA /* MUKDownloadBaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 068509A81518F4A800D450CA /* MUKDownloadBaseTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,8 @@
 		0685099F1518EE4C00D450CA /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		068509A11518EFAE00D450CA /* MUKBufferedDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKBufferedDownload.h; sourceTree = "<group>"; };
 		068509A21518EFAE00D450CA /* MUKBufferedDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKBufferedDownload.m; sourceTree = "<group>"; };
+		068509A71518F4A800D450CA /* MUKDownloadBaseTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKDownloadBaseTests.h; sourceTree = "<group>"; };
+		068509A81518F4A800D450CA /* MUKDownloadBaseTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKDownloadBaseTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +149,8 @@
 			children = (
 				065668831517C9B600DA53AA /* InfoPlist.strings */,
 				065668851517C9B600DA53AA /* MUKDownloadTests-Info.plist */,
+				068509A51518F48600D450CA /* Base */,
+				068509A61518F48600D450CA /* Buffered Download */,
 				0685099A1518A10B00D450CA /* Testing URL Protocol */,
 				065668861517C9B600DA53AA /* URL Connection */,
 			);
@@ -176,6 +181,22 @@
 			children = (
 				068509A11518EFAE00D450CA /* MUKBufferedDownload.h */,
 				068509A21518EFAE00D450CA /* MUKBufferedDownload.m */,
+			);
+			path = "Buffered Download";
+			sourceTree = "<group>";
+		};
+		068509A51518F48600D450CA /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				068509A71518F4A800D450CA /* MUKDownloadBaseTests.h */,
+				068509A81518F4A800D450CA /* MUKDownloadBaseTests.m */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		068509A61518F48600D450CA /* Buffered Download */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			path = "Buffered Download";
 			sourceTree = "<group>";
@@ -330,6 +351,7 @@
 			files = (
 				065668901517CB4D00DA53AA /* MUKURLConnectionTests.m in Sources */,
 				0685099E1518A12A00D450CA /* MUKTestURLProtocol.m in Sources */,
+				068509A91518F4A800D450CA /* MUKDownloadBaseTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -89,6 +89,171 @@
     [self unregisterTestURLProtocol_];
 }
 
+- (void)testProgress {
+    // Setup connection
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.apple.com"]];
+    MUKURLConnection *connection = [[MUKURLConnection alloc] initWithRequest:request];
+    
+    // Create two test chunks
+    NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSArray *testChunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
+    long long chunksLength = [firstChunk length] + [secondChunk length];
+    
+    __block BOOL testsDone = NO; 
+    __block NSInteger chunkIndex = 0;
+    __block long long receivedLength = 0;
+    __weak MUKURLConnection *weakConnection = connection;
+    connection.progressHandler = ^(NSData *data, float quota) {
+        MUKURLConnection *strongConnection = weakConnection;
+        NSData *expectedChunk = [testChunks objectAtIndex:chunkIndex];
+        
+        // Verify data
+        NSString *expectedString = [[NSString alloc] initWithData:expectedChunk encoding:NSUTF8StringEncoding];
+        NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        STAssertTrue([expectedChunk isEqualToData:data], @"Chunk (\"%@\") at index %i does not match expected one (\"%@\")", string, chunkIndex, expectedString);
+        
+        // Verify lengths
+        receivedLength += [data length];
+        STAssertEquals(receivedLength, strongConnection.receivedBytesCount, @"Received data length does not match");
+        STAssertEquals(chunksLength, strongConnection.expectedBytesCount, @"Expected data length does not match");
+        
+        // Verify quota
+        float q = (float)receivedLength/(float)chunksLength;
+        STAssertEqualsWithAccuracy(quota, q, 0.001, @"Passed quota does not match with computed one");
+        
+        // Next
+        chunkIndex++;
+        
+        // Tests complete
+        if (chunkIndex >= [testChunks count]) testsDone = YES;
+    };    
+    
+    [self registerTestURLProtocol_];
+    [MUKTestURLProtocol setChunksToProduce:testChunks];
+    
+    [connection start];
+    
+    BOOL done = [self waitForCompletion_:&testsDone timeout_:5.0];
+    if (!done) {
+        STFail(@"Timeout");
+    }
+    
+    [self unregisterTestURLProtocol_];
+}
+
+- (void)testSuccess {
+    // Setup connection
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.apple.com"]];
+    MUKURLConnection *connection = [[MUKURLConnection alloc] initWithRequest:request];
+    
+    // Create two test chunks
+    NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSArray *testChunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
+    long long chunksLength = [firstChunk length] + [secondChunk length];
+    
+    __block BOOL testsDone = NO;
+    __weak MUKURLConnection *weakConnection = connection;
+    connection.completionHandler = ^(BOOL success, NSError *error) {
+        MUKURLConnection *strongConnection = weakConnection;
+        
+        STAssertNil(error, @"No error when connection succeeds");
+        STAssertTrue(success, @"Real success");
+        
+        STAssertEquals(strongConnection.receivedBytesCount, chunksLength, @"Received all data");
+        STAssertEquals(strongConnection.receivedBytesCount, strongConnection.expectedBytesCount, @"Received all data");
+        
+        testsDone = YES;
+    };
+    
+    [self registerTestURLProtocol_];
+    [MUKTestURLProtocol setChunksToProduce:testChunks];
+    
+    [connection start];
+    
+    BOOL done = [self waitForCompletion_:&testsDone timeout_:5.0];
+    if (!done) {
+        STFail(@"Timeout");
+    }
+    
+    STAssertFalse([connection isActive], @"Connection should not be active after success");
+    STAssertEquals(connection.receivedBytesCount, (long long)0, @"Received bytes should be 0 when connection is not active");
+    STAssertEquals(connection.expectedBytesCount, NSURLResponseUnknownLength, @"Expected bytes are unknown when connection is not active");
+    
+    [self unregisterTestURLProtocol_];
+}
+
+- (void)testFailure {
+    // Setup connection
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.apple.com"]];
+    MUKURLConnection *connection = [[MUKURLConnection alloc] initWithRequest:request];
+    
+    // Create two test chunks
+    NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSArray *testChunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
+    
+    NSError *expectedError = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorUnknown userInfo:nil];
+    
+    __block BOOL testsDone = NO;
+    connection.completionHandler = ^(BOOL success, NSError *error) {        
+        STAssertTrue(error.domain == expectedError.domain && error.code == expectedError.code, @"Error should match with expected one");
+        STAssertFalse(success, @"Real failure");
+        
+        testsDone = YES;
+    };
+    
+    [self registerTestURLProtocol_];
+    [MUKTestURLProtocol setErrorToProduce:expectedError];
+    [MUKTestURLProtocol setChunksToProduce:testChunks];
+    
+    [connection start];
+    
+    BOOL done = [self waitForCompletion_:&testsDone timeout_:5.0];
+    if (!done) {
+        STFail(@"Timeout");
+    }
+    
+    STAssertFalse([connection isActive], @"Connection should not be active after failure");
+    STAssertEquals(connection.receivedBytesCount, (long long)0, @"Received bytes should be 0 when connection is not active");
+    STAssertEquals(connection.expectedBytesCount, NSURLResponseUnknownLength, @"Expected bytes are unknown when connection is not active");
+    
+    [self unregisterTestURLProtocol_];
+}
+
+- (void)testEarlyFailure {
+    // Setup connection
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.apple.com"]];
+    MUKURLConnection *connection = [[MUKURLConnection alloc] initWithRequest:request];
+    
+    NSError *expectedError = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorUnknown userInfo:nil];
+    
+    __block BOOL testsDone = NO;
+    connection.completionHandler = ^(BOOL success, NSError *error) {        
+        STAssertTrue(error.domain == expectedError.domain && error.code == expectedError.code, @"Error should match with expected one");
+        STAssertFalse(success, @"Real failure");
+        
+        testsDone = YES;
+    };
+    
+    [self registerTestURLProtocol_];
+    [MUKTestURLProtocol setErrorToProduce:expectedError];
+    
+    [connection start];
+    
+    BOOL done = [self waitForCompletion_:&testsDone timeout_:5.0];
+    if (!done) {
+        STFail(@"Timeout");
+    }
+    
+    STAssertFalse([connection isActive], @"Connection should not be active after failure");
+    STAssertEquals(connection.receivedBytesCount, (long long)0, @"Received bytes should be 0 when connection is not active");
+    STAssertEquals(connection.expectedBytesCount, NSURLResponseUnknownLength, @"Expected bytes are unknown when connection is not active");
+    
+    [self unregisterTestURLProtocol_];
+}
+
 #pragma mark - Private
 
 - (void)registerTestURLProtocol_ {

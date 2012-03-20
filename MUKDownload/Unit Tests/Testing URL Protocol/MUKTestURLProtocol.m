@@ -2,6 +2,7 @@
 
 @interface MUKTestURLProtocol ()
 - (NSInteger)expectedContentLengthWithChunks_:(NSArray *)chunks;
+- (BOOL)waitForCompletion_:(BOOL *)done timeout_:(NSTimeInterval)timeout;
 @end
 
 @implementation MUKTestURLProtocol
@@ -71,6 +72,9 @@ static NSArray *MUKTestURLProtocolChunksToProduce = nil;
     [MUKTestURLProtocolChunksToProduce enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) 
     {
         [client URLProtocol:self didLoadData:obj];
+        
+        BOOL done = NO;
+        [self waitForCompletion_:&done timeout_:0.2];
     }];
     
     // Success of failure
@@ -103,6 +107,20 @@ static NSArray *MUKTestURLProtocolChunksToProduce = nil;
     }
     
     return expectedContentLenght;
+}
+
+- (BOOL)waitForCompletion_:(BOOL *)done timeout_:(NSTimeInterval)timeout {
+    NSDate *timeoutDate = [NSDate dateWithTimeIntervalSinceNow:timeout];
+    
+    do {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:timeoutDate];
+        
+        if ([timeoutDate timeIntervalSinceNow] < 0.0) {
+            break;
+        }
+    } while (*done == NO);
+    
+    return *done;
 }
 
 @end

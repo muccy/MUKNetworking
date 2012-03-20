@@ -60,6 +60,7 @@
 		065668881517C9B600DA53AA /* MUKURLConnectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKURLConnectionTests.m; sourceTree = "<group>"; };
 		0685099C1518A12A00D450CA /* MUKTestURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKTestURLProtocol.h; sourceTree = "<group>"; };
 		0685099D1518A12A00D450CA /* MUKTestURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKTestURLProtocol.m; sourceTree = "<group>"; };
+		0685099F1518EE4C00D450CA /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +89,7 @@
 		065668331517A85A00DA53AA = {
 			isa = PBXGroup;
 			children = (
+				0685099F1518EE4C00D450CA /* LICENSE */,
 				065668801517C9B600DA53AA /* MUKDownload-Prefix.pch */,
 				065668811517C9B600DA53AA /* MUKDownload.h */,
 				0656687C1517C9B600DA53AA /* Classes */,

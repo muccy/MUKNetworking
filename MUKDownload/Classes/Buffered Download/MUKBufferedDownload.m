@@ -41,7 +41,7 @@
 #pragma mark - Methods
 
 - (NSData *)bufferedData {
-    return [self.bufferedData copy];
+    return [self.buffer_ copy];
 }
 
 #pragma mark - Overrides
@@ -59,16 +59,7 @@
 
 - (void)didReceiveResponse:(NSURLResponse *)response {
     [super didReceiveResponse:response];
-    
-    NSUInteger length;
-    if (NSURLResponseUnknownLength == self.expectedBytesCount) {
-        length = 0;
-    }
-    else {
-        length = self.expectedBytesCount;
-    }
-    
-    self.buffer_ = [NSMutableData dataWithLength:length];
+    self.buffer_ = [NSMutableData data];
 }
 
 - (void)didFinishLoading {

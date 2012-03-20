@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		065668911517CE5600DA53AA /* Documentation */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 065668921517CE5600DA53AA /* Build configuration list for PBXAggregateTarget "Documentation" */;
+			buildPhases = (
+				065668951517CE9200DA53AA /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Documentation;
+			productName = Documentation;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		065668421517A85A00DA53AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 065668411517A85A00DA53AA /* Foundation.framework */; };
 		065668521517A85B00DA53AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 065668511517A85B00DA53AA /* UIKit.framework */; };
@@ -212,6 +226,7 @@
 			targets = (
 				0656683D1517A85A00DA53AA /* MUKDownload */,
 				0656684D1517A85A00DA53AA /* MUKDownloadTests */,
+				065668911517CE5600DA53AA /* Documentation */,
 			);
 		};
 /* End PBXProject section */
@@ -253,6 +268,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A\"\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n\n# Link the \"Current\" version to \"A\"\nln -sfh A \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/Current\"\nln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Headers\"\nln -sfh \"Versions/Current/${PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# The -a ensures that the headers maintain the source modification date so that we don't constantly\n# cause propagating rebuilds of files that import these headers.\ncp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"";
+		};
+		065668951517CE9200DA53AA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/appledoc \\\n--project-name \"MUKDownload\" \\\n--project-company \"MeLive\" \\\n--company-id \"it.melive\" \\\n--output \"Documentation\" \\\n--logformat xcode \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--no-repeat-first-par \\\n--no-warn-invalid-crossref \\\n--ignore \"*.m\" \\\n--ignore \"Unit Tests\" \\\n--exit-threshold 2 \\\n\"${PROJECT_DIR}\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -314,6 +342,7 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -337,6 +366,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -355,6 +385,7 @@
 				DSTROOT = /tmp/MUKDownload.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MUKDownload/MUKDownload-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -367,6 +398,7 @@
 				DSTROOT = /tmp/MUKDownload.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MUKDownload/MUKDownload-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -382,6 +414,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MUKDownload/MUKDownload-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = "MUKDownload/Unit Tests/MUKDownloadTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
@@ -397,9 +430,26 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MUKDownload/MUKDownload-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = "MUKDownload/Unit Tests/MUKDownloadTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+		065668931517CE5600DA53AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_THUMB_SUPPORT = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		065668941517CE5600DA53AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_THUMB_SUPPORT = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -429,6 +479,15 @@
 			buildConfigurations = (
 				065668661517A85B00DA53AA /* Debug */,
 				065668671517A85B00DA53AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		065668921517CE5600DA53AA /* Build configuration list for PBXAggregateTarget "Documentation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				065668931517CE5600DA53AA /* Debug */,
+				065668941517CE5600DA53AA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

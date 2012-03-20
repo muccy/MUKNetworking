@@ -6,7 +6,6 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 @property (nonatomic, strong) NSURLConnection *connection_;
 @property (nonatomic, assign, readwrite) long long receivedBytesCount, expectedBytesCount;
 
-- (void)nullifyHandlers_;
 - (void)nullifyInternalURLConnection_;
 - (long long)expectedBytesCountInURLResponse_:(NSURLResponse *)response;
 @end
@@ -37,7 +36,6 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 
 - (void)dealloc {
     [self nullifyInternalURLConnection_];
-    [self nullifyHandlers_];
 }
 
 #pragma mark - Connection
@@ -105,13 +103,6 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 
 #pragma mark - Private
 
-- (void)nullifyHandlers_ {
-    self.responseHandler = nil;
-    self.completionHandler = nil;
-    self.progressHandler = nil;
-    self.redirectHandler = nil;
-}
-
 - (void)nullifyInternalURLConnection_ {
     [self.connection_ cancel];
     self.connection_ = nil;
@@ -131,7 +122,7 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
     return expected;
 }
 
-#pragma mark - NSURLConnectionDelegate
+#pragma mark - NSURLConnection delegate
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {

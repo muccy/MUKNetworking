@@ -15,6 +15,14 @@
  
  Then, you fire your connection:
     [connection start];
+ 
+ @warning This class implements following NSURLConnection delegate methods:
+
+     - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+     - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+     - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+     - (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse
+     - (void)connectionDidFinishLoading:(NSURLConnection *)connection
  */
 
 #import <Foundation/Foundation.h>

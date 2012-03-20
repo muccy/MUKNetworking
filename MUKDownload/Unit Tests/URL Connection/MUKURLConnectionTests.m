@@ -78,7 +78,7 @@
     
     // Tests to be performed
     __block BOOL testsDone = NO;
-    __weak MUKURLConnection *weakConnection = connection;
+    __unsafe_unretained MUKURLConnection *weakConnection = connection;
     
     // Set handler to be tested
     connection.responseHandler = ^(NSURLResponse *response) {
@@ -121,7 +121,7 @@
     __block BOOL testsDone = NO; 
     __block NSInteger chunkIndex = 0;
     __block long long receivedLength = 0;
-    __weak MUKURLConnection *weakConnection = connection;
+    __unsafe_unretained MUKURLConnection *weakConnection = connection;
     connection.progressHandler = ^(NSData *data, float quota) {
         MUKURLConnection *strongConnection = weakConnection;
         NSData *expectedChunk = [testChunks objectAtIndex:chunkIndex];
@@ -172,7 +172,7 @@
     long long chunksLength = [firstChunk length] + [secondChunk length];
     
     __block BOOL testsDone = NO;
-    __weak MUKURLConnection *weakConnection = connection;
+    __unsafe_unretained MUKURLConnection *weakConnection = connection;
     connection.completionHandler = ^(BOOL success, NSError *error) {
         MUKURLConnection *strongConnection = weakConnection;
         

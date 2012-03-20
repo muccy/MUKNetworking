@@ -7,7 +7,6 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 @property (nonatomic, assign, readwrite) long long receivedBytesCount, expectedBytesCount;
 
 - (void)nullifyInternalURLConnection_;
-- (long long)expectedBytesCountInURLResponse_:(NSURLResponse *)response;
 @end
 
 @implementation MUKURLConnection
@@ -50,8 +49,8 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
     }
     
     self.connection_ = [[NSURLConnection alloc] initWithRequest:self.request delegate:self];
-    [self.connection_ start];
-    return YES;
+    
+    return (self.connection_ != nil);
 }
 
 - (BOOL)cancel {
@@ -66,7 +65,7 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 #pragma mark - Callbacks
 
 - (void)didFailWithError:(NSError *)error {
-    self.completionHandler(NO, error);
+    if (self.completionHandler) self.completionHandler(NO, error);
     [self nullifyInternalURLConnection_];
 }
 
@@ -78,13 +77,13 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
         quota = ((float)self.receivedBytesCount/(float)self.expectedBytesCount);
     }
     
-    self.progressHandler(data, quota);
+    if (self.progressHandler) self.progressHandler(data, quota);
 }
 
 - (void)didReceiveResponse:(NSURLResponse *)response {
     self.receivedBytesCount = 0;
-    self.expectedBytesCount = [self expectedBytesCountInURLResponse_:response];
-    self.responseHandler(response);
+    self.expectedBytesCount = response.expectedContentLength;
+    if (self.responseHandler) self.responseHandler(response);
 }
 
 - (NSURLRequest *)willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse
@@ -97,7 +96,7 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 }
 
 - (void)didFinishLoading {
-    self.completionHandler(YES, nil);
+    if (self.completionHandler) self.completionHandler(YES, nil);
     [self nullifyInternalURLConnection_];
 }
 
@@ -109,17 +108,6 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
     
     self.receivedBytesCount = 0;
     self.expectedBytesCount = NSURLResponseUnknownLength;
-}
-
-- (long long)expectedBytesCountInURLResponse_:(NSURLResponse *)response {
-    long long expected = NSURLResponseUnknownLength;
-    
-    if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-        expected = httpResponse.expectedContentLength;
-    }
-    
-    return expected;
 }
 
 #pragma mark - NSURLConnection delegate

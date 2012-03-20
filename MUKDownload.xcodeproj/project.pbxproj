@@ -32,9 +32,10 @@
 		0656688F1517CA2A00DA53AA /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0656684F1517A85A00DA53AA /* SenTestingKit.framework */; };
 		065668901517CB4D00DA53AA /* MUKURLConnectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 065668881517C9B600DA53AA /* MUKURLConnectionTests.m */; };
 		0685099E1518A12A00D450CA /* MUKTestURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 0685099D1518A12A00D450CA /* MUKTestURLProtocol.m */; };
-		068509A31518EFAE00D450CA /* MUKBufferedDownload.h in Headers */ = {isa = PBXBuildFile; fileRef = 068509A11518EFAE00D450CA /* MUKBufferedDownload.h */; };
+		068509A31518EFAE00D450CA /* MUKBufferedDownload.h in Headers */ = {isa = PBXBuildFile; fileRef = 068509A11518EFAE00D450CA /* MUKBufferedDownload.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		068509A41518EFAE00D450CA /* MUKBufferedDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 068509A21518EFAE00D450CA /* MUKBufferedDownload.m */; };
 		068509A91518F4A800D450CA /* MUKDownloadBaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 068509A81518F4A800D450CA /* MUKDownloadBaseTests.m */; };
+		068509AC1518F5A700D450CA /* MUKBufferedDownloadTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 068509AB1518F5A700D450CA /* MUKBufferedDownloadTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,8 @@
 		068509A21518EFAE00D450CA /* MUKBufferedDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKBufferedDownload.m; sourceTree = "<group>"; };
 		068509A71518F4A800D450CA /* MUKDownloadBaseTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKDownloadBaseTests.h; sourceTree = "<group>"; };
 		068509A81518F4A800D450CA /* MUKDownloadBaseTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKDownloadBaseTests.m; sourceTree = "<group>"; };
+		068509AA1518F5A700D450CA /* MUKBufferedDownloadTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKBufferedDownloadTests.h; sourceTree = "<group>"; };
+		068509AB1518F5A700D450CA /* MUKBufferedDownloadTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKBufferedDownloadTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,6 +200,8 @@
 		068509A61518F48600D450CA /* Buffered Download */ = {
 			isa = PBXGroup;
 			children = (
+				068509AA1518F5A700D450CA /* MUKBufferedDownloadTests.h */,
+				068509AB1518F5A700D450CA /* MUKBufferedDownloadTests.m */,
 			);
 			path = "Buffered Download";
 			sourceTree = "<group>";
@@ -352,6 +357,7 @@
 				065668901517CB4D00DA53AA /* MUKURLConnectionTests.m in Sources */,
 				0685099E1518A12A00D450CA /* MUKTestURLProtocol.m in Sources */,
 				068509A91518F4A800D450CA /* MUKDownloadBaseTests.m in Sources */,
+				068509AC1518F5A700D450CA /* MUKBufferedDownloadTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -401,10 +407,11 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PUBLIC_HEADERS_FOLDER_PATH = Headers;
 				SDKROOT = iphoneos;
 				STRIP_STYLE = "non-global";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -425,10 +432,11 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PUBLIC_HEADERS_FOLDER_PATH = Headers;
 				SDKROOT = iphoneos;
 				STRIP_STYLE = "non-global";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

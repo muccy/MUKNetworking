@@ -65,7 +65,16 @@
 
 - (void)didReceiveResponse:(NSURLResponse *)response {
     [super didReceiveResponse:response];
-    self.buffer_ = [NSMutableData data];
+    
+    NSUInteger capacity;
+    if (self.expectedBytesCount != NSURLResponseUnknownLength) {
+        capacity = self.expectedBytesCount;
+    }
+    else {
+        capacity = 0;
+    }
+    
+    self.buffer_ = [NSMutableData dataWithCapacity:capacity];
 }
 
 - (void)didFinishLoading {

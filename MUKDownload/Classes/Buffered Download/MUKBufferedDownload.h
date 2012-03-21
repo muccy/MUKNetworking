@@ -29,6 +29,9 @@
 
  It overrides superclass as follows:
  
+ It empties internal buffer on cancellation (after calling super implementation)
+    - (BOOL)cancel
+ 
  It empties internal buffer on errors (after calling super implementation and, 
  thus, completionHandler):
     - (void)didFailWithError:(NSError *)error

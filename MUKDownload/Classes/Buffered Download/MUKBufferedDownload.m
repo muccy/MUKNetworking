@@ -46,6 +46,12 @@
 
 #pragma mark - Overrides
 
+- (BOOL)cancel {
+    BOOL success = [super cancel];
+    [self emptyBuffer_];
+    return success;
+}
+
 - (void)didFailWithError:(NSError *)error {
     [super didFailWithError:error];
     [self emptyBuffer_];

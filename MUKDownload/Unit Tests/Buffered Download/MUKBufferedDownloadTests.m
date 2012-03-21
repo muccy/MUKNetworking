@@ -45,17 +45,13 @@
     NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSArray *chunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
     
-    __unsafe_unretained MUKBufferedDownloadTests *weakSelf = self;
     __unsafe_unretained MUKBufferedDownload *weakDownload = download;
     
     __block NSInteger chunkIndex = 0;
     __block BOOL progressTestsDone = NO;
-    download.progressHandler = ^(NSData *data, float quota) {
-        MUKBufferedDownload *strongDownload = weakDownload;
-        MUKBufferedDownloadTests *strongSelf = weakSelf;
-        
-        NSData *receivedChunks = [strongSelf mergedChunksToIndex_:chunkIndex chunks_:chunks];
-        NSData *bufferedData = [strongDownload bufferedData];
+    download.progressHandler = ^(NSData *data, float quota) {        
+        NSData *receivedChunks = [self mergedChunksToIndex_:chunkIndex chunks_:chunks];
+        NSData *bufferedData = [weakDownload bufferedData];
         STAssertTrue([bufferedData isEqualToData:receivedChunks], @"Received data should be also buffered");
         
         chunkIndex++;
@@ -64,16 +60,13 @@
     }; // progressHandler
     
     __block BOOL completionTestsDone = NO;
-    download.completionHandler = ^(BOOL success, NSError *error) {
-        MUKBufferedDownload *strongDownload = weakDownload;
-        MUKBufferedDownloadTests *strongSelf = weakSelf;
-        
-        NSData *receivedChunks = [strongSelf mergedChunksToIndex_:[chunks count]-1 chunks_:chunks];
-        NSData *bufferedData = [strongDownload bufferedData];
+    download.completionHandler = ^(BOOL success, NSError *error) {        
+        NSData *receivedChunks = [self mergedChunksToIndex_:[chunks count]-1 chunks_:chunks];
+        NSData *bufferedData = [weakDownload bufferedData];
         
         STAssertTrue([bufferedData isEqualToData:receivedChunks], @"Received data should be also buffered");
 
-        STAssertEquals((long long)[bufferedData length], strongDownload.expectedBytesCount, @"Buffer length should match with expected data length");
+        STAssertEquals((long long)[bufferedData length], weakDownload.expectedBytesCount, @"Buffer length should match with expected data length");
         
         completionTestsDone = YES;
     }; // completionHandler
@@ -105,13 +98,11 @@
     
     __block BOOL testsDone = NO;
     __unsafe_unretained MUKBufferedDownload *weakDownload = download;
-    download.completionHandler = ^(BOOL success, NSError *error) {
-        MUKBufferedDownload *strongDownload = weakDownload;
-        
+    download.completionHandler = ^(BOOL success, NSError *error) {        
         STAssertFalse(success, @"Real error");
         STAssertNotNil(error, @"There should be an error");
         
-        STAssertTrue([[strongDownload bufferedData] length] > 0, @"Something should be downloaded despite final error");
+        STAssertTrue([[weakDownload bufferedData] length] > 0, @"Something should be downloaded despite final error");
         
         testsDone = YES;
     };
@@ -142,13 +133,11 @@
     
     __block BOOL testsDone = NO;
     __unsafe_unretained MUKBufferedDownload *weakDownload = download;
-    download.completionHandler = ^(BOOL success, NSError *error) {
-        MUKBufferedDownload *strongDownload = weakDownload;
-        
+    download.completionHandler = ^(BOOL success, NSError *error) {        
         STAssertTrue(success, @"True success");
         STAssertNil(error, @"No errors expected");
         
-        STAssertTrue([[strongDownload bufferedData] isEqualToData:expectedData], @"Data downloaded");
+        STAssertTrue([[weakDownload bufferedData] isEqualToData:expectedData], @"Data downloaded");
         
         testsDone = YES;
     };

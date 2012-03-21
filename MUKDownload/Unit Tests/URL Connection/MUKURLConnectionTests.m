@@ -81,14 +81,12 @@
     __unsafe_unretained MUKURLConnection *weakConnection = connection;
     
     // Set handler to be tested
-    connection.responseHandler = ^(NSURLResponse *response) {
-        MUKURLConnection *strongConnection = weakConnection;
-        
+    connection.responseHandler = ^(NSURLResponse *response) {        
         // Perform tests
         STAssertEquals(response.expectedContentLength, expectedResponse.expectedContentLength, @"Received expected lenght should be equal to expected one");
         
-        STAssertEquals(strongConnection.expectedBytesCount, expectedLen, @"Stored expected lenght should match");
-        STAssertEquals(strongConnection.receivedBytesCount, (long long)0, @"Stored received bytes length should be 0 at this time");
+        STAssertEquals(weakConnection.expectedBytesCount, expectedLen, @"Stored expected lenght should match");
+        STAssertEquals(weakConnection.receivedBytesCount, (long long)0, @"Stored received bytes length should be 0 at this time");
         
         // Signal completion
         testsDone = YES;
@@ -123,7 +121,6 @@
     __block long long receivedLength = 0;
     __unsafe_unretained MUKURLConnection *weakConnection = connection;
     connection.progressHandler = ^(NSData *data, float quota) {
-        MUKURLConnection *strongConnection = weakConnection;
         NSData *expectedChunk = [testChunks objectAtIndex:chunkIndex];
         
         // Verify data
@@ -133,8 +130,8 @@
         
         // Verify lengths
         receivedLength += [data length];
-        STAssertEquals(receivedLength, strongConnection.receivedBytesCount, @"Received data length does not match");
-        STAssertEquals(chunksLength, strongConnection.expectedBytesCount, @"Expected data length does not match");
+        STAssertEquals(receivedLength, weakConnection.receivedBytesCount, @"Received data length does not match");
+        STAssertEquals(chunksLength, weakConnection.expectedBytesCount, @"Expected data length does not match");
         
         // Verify quota
         float q = (float)receivedLength/(float)chunksLength;
@@ -173,14 +170,12 @@
     
     __block BOOL testsDone = NO;
     __unsafe_unretained MUKURLConnection *weakConnection = connection;
-    connection.completionHandler = ^(BOOL success, NSError *error) {
-        MUKURLConnection *strongConnection = weakConnection;
-        
+    connection.completionHandler = ^(BOOL success, NSError *error) {        
         STAssertNil(error, @"No error when connection succeeds");
         STAssertTrue(success, @"Real success");
         
-        STAssertEquals(strongConnection.receivedBytesCount, chunksLength, @"Received all data");
-        STAssertEquals(strongConnection.receivedBytesCount, strongConnection.expectedBytesCount, @"Received all data");
+        STAssertEquals(weakConnection.receivedBytesCount, chunksLength, @"Received all data");
+        STAssertEquals(weakConnection.receivedBytesCount, weakConnection.expectedBytesCount, @"Received all data");
         
         testsDone = YES;
     };

@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		065668911517CE5600DA53AA /* Documentation */ = {
+		065668911517CE5600DA53AA /* MUKDownloadDocumentation */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = 065668921517CE5600DA53AA /* Build configuration list for PBXAggregateTarget "Documentation" */;
+			buildConfigurationList = 065668921517CE5600DA53AA /* Build configuration list for PBXAggregateTarget "MUKDownloadDocumentation" */;
 			buildPhases = (
 				065668951517CE9200DA53AA /* ShellScript */,
 			);
 			dependencies = (
 			);
-			name = Documentation;
+			name = MUKDownloadDocumentation;
 			productName = Documentation;
 		};
 /* End PBXAggregateTarget section */
@@ -282,7 +282,7 @@
 			targets = (
 				0656683D1517A85A00DA53AA /* MUKDownload */,
 				0656684D1517A85A00DA53AA /* MUKDownloadTests */,
-				065668911517CE5600DA53AA /* Documentation */,
+				065668911517CE5600DA53AA /* MUKDownloadDocumentation */,
 			);
 		};
 /* End PBXProject section */
@@ -545,7 +545,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		065668921517CE5600DA53AA /* Build configuration list for PBXAggregateTarget "Documentation" */ = {
+		065668921517CE5600DA53AA /* Build configuration list for PBXAggregateTarget "MUKDownloadDocumentation" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				065668931517CE5600DA53AA /* Debug */,

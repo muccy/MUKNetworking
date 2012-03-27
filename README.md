@@ -61,27 +61,23 @@ Build `MUKNetworkingDocumentation` target in order to install documentation in X
 
 Usage
 -----
-Look at included examples of two main classes:
-* `MUKURLConnection`: base class and wrapper to `NSURLConnection`.
-* `MUKBufferedDownload`: simple class to download data to a in-memory buffer.
+Look at included examples and at this code snippet:
 
-Code snippet:
+    __block MUKURLConnection *connection = [[MUKURLConnection alloc] initWithRequest:...];
 
-    __block MUKBufferedDownload *download = [[MUKBufferedDownload alloc] initWithRequest:...];
-
-    download.completionHandler = ^(BOOL success, NSError *error) {
+    connection.completionHandler = ^(BOOL success, NSError *error) {
         if (success) {
-            NSData *downloadedData = [download bufferedData];
+            NSData *downloadedData = [connection bufferedData];
             // Do something with data
         }
         else {
             NSLog(@"Error during download: %@", [error localizedDescription]);
         }
         
-        download = nil;
+        connection = nil;
     };
     
-    [download start];
+    [connection start];
 
 License
 -------

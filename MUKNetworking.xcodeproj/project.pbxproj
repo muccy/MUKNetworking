@@ -21,14 +21,11 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		0616E5D61521AF7E00014231 /* MUKBufferedDownload.h in Headers */ = {isa = PBXBuildFile; fileRef = 0616E5CF1521AF7E00014231 /* MUKBufferedDownload.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0616E5D71521AF7E00014231 /* MUKBufferedDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 0616E5D01521AF7E00014231 /* MUKBufferedDownload.m */; };
 		0616E5D81521AF7E00014231 /* MUKURLConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 0616E5D21521AF7E00014231 /* MUKURLConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0616E5D91521AF7E00014231 /* MUKURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 0616E5D31521AF7E00014231 /* MUKURLConnection.m */; };
 		0616E5DA1521AF7E00014231 /* MUKNetworking-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 0616E5D41521AF7E00014231 /* MUKNetworking-Prefix.pch */; };
 		0616E5DB1521AF7E00014231 /* MUKNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 0616E5D51521AF7E00014231 /* MUKNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0616E5EC1521AF8900014231 /* MUKNetworkingBaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0616E5DF1521AF8900014231 /* MUKNetworkingBaseTests.m */; };
-		0616E5ED1521AF8900014231 /* MUKBufferedDownloadTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0616E5E21521AF8900014231 /* MUKBufferedDownloadTests.m */; };
 		0616E5EE1521AF8900014231 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0616E5E31521AF8900014231 /* InfoPlist.strings */; };
 		0616E5F01521AF8900014231 /* MUKTestURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 0616E5E81521AF8900014231 /* MUKTestURLProtocol.m */; };
 		0616E5F11521AF8900014231 /* MUKURLConnectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0616E5EB1521AF8900014231 /* MUKURLConnectionTests.m */; };
@@ -50,16 +47,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0616E5CF1521AF7E00014231 /* MUKBufferedDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKBufferedDownload.h; sourceTree = "<group>"; };
-		0616E5D01521AF7E00014231 /* MUKBufferedDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKBufferedDownload.m; sourceTree = "<group>"; };
 		0616E5D21521AF7E00014231 /* MUKURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKURLConnection.h; sourceTree = "<group>"; };
 		0616E5D31521AF7E00014231 /* MUKURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKURLConnection.m; sourceTree = "<group>"; };
 		0616E5D41521AF7E00014231 /* MUKNetworking-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MUKNetworking-Prefix.pch"; path = "MUKNetworking/MUKNetworking-Prefix.pch"; sourceTree = "<group>"; };
 		0616E5D51521AF7E00014231 /* MUKNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MUKNetworking.h; path = MUKNetworking/MUKNetworking.h; sourceTree = "<group>"; };
-		0616E5DE1521AF8900014231 /* MUKNetworkingBaseTests.h */ = {isa = PBXFileReference; fileEncoding = 4; path = MUKNetworkingBaseTests.h; sourceTree = "<group>"; };
+		0616E5DE1521AF8900014231 /* MUKNetworkingBaseTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKNetworkingBaseTests.h; sourceTree = "<group>"; };
 		0616E5DF1521AF8900014231 /* MUKNetworkingBaseTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKNetworkingBaseTests.m; sourceTree = "<group>"; };
-		0616E5E11521AF8900014231 /* MUKBufferedDownloadTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKBufferedDownloadTests.h; sourceTree = "<group>"; };
-		0616E5E21521AF8900014231 /* MUKBufferedDownloadTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKBufferedDownloadTests.m; sourceTree = "<group>"; };
 		0616E5E41521AF8900014231 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0616E5E51521AF8900014231 /* MUKNetworkingTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MUKNetworkingTests-Info.plist"; sourceTree = "<group>"; };
 		0616E5E71521AF8900014231 /* MUKTestURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKTestURLProtocol.h; sourceTree = "<group>"; };
@@ -100,20 +93,10 @@
 		0616E5CD1521AF7E00014231 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				0616E5CE1521AF7E00014231 /* Buffered Download */,
 				0616E5D11521AF7E00014231 /* URL Connection */,
 			);
 			name = Classes;
 			path = MUKNetworking/Classes;
-			sourceTree = "<group>";
-		};
-		0616E5CE1521AF7E00014231 /* Buffered Download */ = {
-			isa = PBXGroup;
-			children = (
-				0616E5CF1521AF7E00014231 /* MUKBufferedDownload.h */,
-				0616E5D01521AF7E00014231 /* MUKBufferedDownload.m */,
-			);
-			path = "Buffered Download";
 			sourceTree = "<group>";
 		};
 		0616E5D11521AF7E00014231 /* URL Connection */ = {
@@ -129,11 +112,10 @@
 			isa = PBXGroup;
 			children = (
 				0616E5DD1521AF8900014231 /* Base */,
-				0616E5E01521AF8900014231 /* Buffered Download */,
+				0616E5E91521AF8900014231 /* URL Connection */,
 				0616E5E31521AF8900014231 /* InfoPlist.strings */,
 				0616E5E51521AF8900014231 /* MUKNetworkingTests-Info.plist */,
 				0616E5E61521AF8900014231 /* Testing URL Protocol */,
-				0616E5E91521AF8900014231 /* URL Connection */,
 			);
 			name = "Unit Tests";
 			path = "MUKNetworking/Unit Tests";
@@ -146,15 +128,6 @@
 				0616E5DF1521AF8900014231 /* MUKNetworkingBaseTests.m */,
 			);
 			path = Base;
-			sourceTree = "<group>";
-		};
-		0616E5E01521AF8900014231 /* Buffered Download */ = {
-			isa = PBXGroup;
-			children = (
-				0616E5E11521AF8900014231 /* MUKBufferedDownloadTests.h */,
-				0616E5E21521AF8900014231 /* MUKBufferedDownloadTests.m */,
-			);
-			path = "Buffered Download";
 			sourceTree = "<group>";
 		};
 		0616E5E61521AF8900014231 /* Testing URL Protocol */ = {
@@ -214,7 +187,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0616E5D61521AF7E00014231 /* MUKBufferedDownload.h in Headers */,
 				0616E5D81521AF7E00014231 /* MUKURLConnection.h in Headers */,
 				0616E5DB1521AF7E00014231 /* MUKNetworking.h in Headers */,
 				0616E5DA1521AF7E00014231 /* MUKNetworking-Prefix.pch in Headers */,
@@ -338,7 +310,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/appledoc \\\n--project-name \"MUKDownload\" \\\n--project-company \"MeLive\" \\\n--company-id \"it.melive\" \\\n--output \"Documentation\" \\\n--logformat xcode \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--no-repeat-first-par \\\n--no-warn-invalid-crossref \\\n--ignore \"*.m\" \\\n--ignore \"Unit Tests\" \\\n--exit-threshold 2 \\\n\"${PROJECT_DIR}\"";
+			shellScript = "/usr/local/bin/appledoc \\\n--project-name \"MUKNetworking\" \\\n--project-company \"MeLive\" \\\n--company-id \"it.melive\" \\\n--output \"Documentation\" \\\n--logformat xcode \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--no-repeat-first-par \\\n--no-warn-invalid-crossref \\\n--ignore \"*.m\" \\\n--ignore \"Unit Tests\" \\\n--ignore \"Example\" \\\n--exit-threshold 2 \\\n\"${PROJECT_DIR}\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -347,7 +319,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0616E5D71521AF7E00014231 /* MUKBufferedDownload.m in Sources */,
 				0616E5D91521AF7E00014231 /* MUKURLConnection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -357,7 +328,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0616E5EC1521AF8900014231 /* MUKNetworkingBaseTests.m in Sources */,
-				0616E5ED1521AF8900014231 /* MUKBufferedDownloadTests.m in Sources */,
 				0616E5F01521AF8900014231 /* MUKTestURLProtocol.m in Sources */,
 				0616E5F11521AF8900014231 /* MUKURLConnectionTests.m in Sources */,
 			);

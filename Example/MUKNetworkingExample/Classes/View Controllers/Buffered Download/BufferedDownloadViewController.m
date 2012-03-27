@@ -19,7 +19,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = @"MUKBufferedDownload";
+        self.title = @"Buffered Download";
     }
     return self;
 }
@@ -47,13 +47,12 @@
 
 - (MUKURLConnection *)createConnection {
     NSURL *url = [NSURL URLWithString:@"http://4.bp.blogspot.com/-7CkVJATx8UA/To1Ve_U9UgI/AAAAAAAAAUk/uTQTKaFOvpY/s1600/steve-jobs-on-time.png"];
-    MUKBufferedDownload *download = [[MUKBufferedDownload alloc] initWithRequest:[NSURLRequest requestWithURL:url]];
+    MUKURLConnection *download = [[MUKURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:url]];
     return download;
 }
 
 - (void)attachHandlersToConnection:(__unsafe_unretained MUKURLConnection *)connection
 {
-    __unsafe_unretained MUKBufferedDownload *download = (MUKBufferedDownload *)connection;
     __unsafe_unretained BufferedDownloadViewController *weakSelf = self;
     
     __block NSInteger chunksCount = 0;
@@ -69,7 +68,7 @@
     };
     
     connection.completionHandler = ^(BOOL success, NSError *error) {
-        UIImage *image = [[UIImage alloc] initWithData:[download bufferedData]];
+        UIImage *image = [[UIImage alloc] initWithData:[connection bufferedData]];
         weakSelf.imageView.image = image;
         
         NSString *text = (success ? @"Success" : @"Error");

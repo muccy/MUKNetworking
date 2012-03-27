@@ -31,12 +31,18 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 @interface MUKURLConnection ()
 @property (nonatomic, strong) NSURLConnection *connection_;
 @property (nonatomic, assign, readwrite) long long receivedBytesCount, expectedBytesCount;
+@property (nonatomic, strong) NSMutableData *buffer_;
 
 - (void)nullifyInternalURLConnection_;
+
+- (void)createBufferIfNeeded_:(NSURLResponse *)response;
+- (void)appendDataToBufferIfNeeded_:(NSData *)data;
+- (void)emptyBufferIfNeeded_;
 @end
 
 @implementation MUKURLConnection
 @synthesize request = request_;
+@synthesize usesBuffer = usesBuffer_;
 @synthesize receivedBytesCount = receivedBytesCount_, expectedBytesCount = expectedBytesCount_;
 @synthesize completionHandler = completionHandler_;
 @synthesize responseHandler = responseHandler_;
@@ -44,6 +50,8 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 @synthesize redirectHandler = redirectHandler_;
 
 @synthesize connection_;
+@synthesize buffer_;
+
 
 - (id)init {
     self = [self initWithRequest:nil];
@@ -55,12 +63,14 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
     if (self) {
         self.expectedBytesCount = NSURLResponseUnknownLength;
         self.request = request;
+        self.usesBuffer = YES;
     }
     return self;
 }
 
 - (void)dealloc {
     [self nullifyInternalURLConnection_];
+    [self emptyBufferIfNeeded_];
 }
 
 #pragma mark - Connection
@@ -85,6 +95,8 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
     }
     
     [self nullifyInternalURLConnection_];
+    [self emptyBufferIfNeeded_];
+    
     return YES;
 }
 
@@ -93,6 +105,7 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 - (void)didFailWithError:(NSError *)error {
     if (self.completionHandler) self.completionHandler(NO, error);
     [self nullifyInternalURLConnection_];
+    [self emptyBufferIfNeeded_];
 }
 
 - (void)didReceiveData:(NSData *)data {
@@ -103,12 +116,15 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
         quota = ((float)self.receivedBytesCount/(float)self.expectedBytesCount);
     }
     
+    [self appendDataToBufferIfNeeded_:data];
     if (self.progressHandler) self.progressHandler(data, quota);
 }
 
 - (void)didReceiveResponse:(NSURLResponse *)response {
     self.receivedBytesCount = 0;
     self.expectedBytesCount = response.expectedContentLength;
+    [self createBufferIfNeeded_:response];
+    
     if (self.responseHandler) self.responseHandler(response);
 }
 
@@ -124,6 +140,33 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 - (void)didFinishLoading {
     if (self.completionHandler) self.completionHandler(YES, nil);
     [self nullifyInternalURLConnection_];
+    [self emptyBufferIfNeeded_];
+}
+
+#pragma mark - Buffer
+
+- (NSData *)bufferedData {
+    return [self.buffer_ copy];
+}
+
+- (NSMutableData *)newEmptyBufferForResponse:(NSURLResponse *)response {
+    NSUInteger capacity;
+    if (self.expectedBytesCount != NSURLResponseUnknownLength) {
+        capacity = self.expectedBytesCount;
+    }
+    else {
+        capacity = 0;
+    }
+    
+    return [[NSMutableData alloc] initWithCapacity:capacity];
+}
+
+- (void)appendReceivedData:(NSData *)data toBuffer:(NSMutableData *)buffer {
+    [buffer appendData:data];
+}
+
+- (void)emptyBuffer:(NSMutableData *)buffer {
+    [buffer setLength:0];
 }
 
 #pragma mark - Private
@@ -134,6 +177,25 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
     
     self.receivedBytesCount = 0;
     self.expectedBytesCount = NSURLResponseUnknownLength;
+}
+
+- (void)createBufferIfNeeded_:(NSURLResponse *)response {
+    if (self.usesBuffer) {
+        self.buffer_ = [self newEmptyBufferForResponse:response];
+    }
+}
+
+- (void)appendDataToBufferIfNeeded_:(NSData *)data {
+    if (self.usesBuffer) {
+        [self appendReceivedData:data toBuffer:self.buffer_];
+    }
+}
+
+- (void)emptyBufferIfNeeded_ {
+    if (self.usesBuffer) {
+        [self emptyBuffer:self.buffer_];
+        self.buffer_ = nil;
+    }
 }
 
 #pragma mark - NSURLConnection delegate

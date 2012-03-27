@@ -41,6 +41,13 @@
  Then, you fire your connection:
     [connection start];
  
+ What is more, this class optionally creates a buffer where chunks are saved: this
+ is the default behaviour, that you could disable setting `usesBuffer` to `NO`.
+ 
+ It empties internal buffer on cancellation, on errors (after calling completionHandler),
+ on success (after calling completionHandler). It appends received data to internal
+ buffer before to call progressHandler.
+ 
  @warning This class implements following NSURLConnection delegate methods:
 
      - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -74,6 +81,13 @@ extern float const MUKURLConnectionUnknownQuota;
  */
 @property (nonatomic, strong) NSURLRequest *request;
 /**
+ It indicates if downloaded chunks of data should be saved into a buffer.
+ 
+ *Default value*: `YES`.
+ */
+@property (nonatomic, assign) BOOL usesBuffer;
+
+/**
  Number of bytes received by the connection.
  
  *Default value*: 0. When cancel is invoked this value is also reset to 0.
@@ -89,6 +103,7 @@ extern float const MUKURLConnectionUnknownQuota;
  is estabilished.
  */
 @property (nonatomic, assign, readonly) long long expectedBytesCount;
+
 /** @name Handlers */
 /**
  An handler called as connection receives a response.
@@ -154,6 +169,9 @@ extern float const MUKURLConnectionUnknownQuota;
 - (BOOL)start;
 /**
  Cancel running connection.
+ 
+ If also empties buffer, if needed.
+ 
  @return YES if connection has been canceled.
  */
 - (BOOL)cancel;
@@ -165,7 +183,7 @@ extern float const MUKURLConnectionUnknownQuota;
  This callback signals when connection is failed.
  
  Default implementation of this method calls completionHandler with `success = NO`
- and deletes internal connection.
+ and deletes internal connection. If also empties buffer, if needed.
  
  This callback is called by internal NSURLConnection delegate implementation of
  `- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error`.
@@ -178,7 +196,8 @@ extern float const MUKURLConnectionUnknownQuota;
  
  Default implementation of this method increments receivedBytesCount by `[data 
  length]`, calculates new `quota` with expectedBytesCount (or sets `quota` to 
- `MUKURLConnectionUnknownQuota`) and calls progressHandler.
+ `MUKURLConnectionUnknownQuota`) and calls progressHandler. If also appends data
+ to buffer, if needed.
  
  This callback is called by internal NSURLConnection delegate implementation of
  `- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data`.
@@ -192,6 +211,7 @@ extern float const MUKURLConnectionUnknownQuota;
  Default implementation of this method sets receivedBytesCount to 0, 
  expectedBytesCount to the right value (`NSURLResponseUnknownLength` if response
  does not contain a valid expected content length) and it calls responseHandler.
+ If also creates buffer, if needed.
  
  This callback is called by internal NSURLConnection delegate implementation of
  `- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response`.
@@ -218,10 +238,54 @@ extern float const MUKURLConnectionUnknownQuota;
  This callback signals when connection has finished to load successfully.
  
  Default implementation of this method calls completionHandler with `success = YES`
- and `error = nil`. Then it deletes internal URL connection.
+ and `error = nil`. Then it deletes internal URL connection. If also empties buffer, 
+ if needed.
  
  This callback is called by internal NSURLConnection delegate implementation of
  `- (void)connectionDidFinishLoading:(NSURLConnection *)connection`.
  */
 - (void)didFinishLoading;
+@end
+
+
+@interface MUKURLConnection (Buffer)
+/**
+ The data downloaded since the call to this method.
+ @return A copy of the buffer.
+ @warning Buffered data is available since until the connection is active. So
+ you have a last chance to grab data in completionHandler.
+ @warning Buffer is copied because real buffer data may disappear in order to 
+ minimize memory footprint.
+ */
+- (NSData *)bufferedData;
+/**
+ Creates a new empty buffer to store data after an URL response.
+ 
+ You could not override this method, because its implementation is
+ fairly simple.
+ 
+ @param response The URL response for the connection's request.
+ @return A new buffer.
+ */
+- (NSMutableData *)newEmptyBufferForResponse:(NSURLResponse *)response;
+/**
+ Appends downloaded chunk to existing buffer.
+ 
+ You could not override this method, because its implementation is
+ fairly simple.
+ 
+ @param data The newly available data.
+ @param buffer Existing buffer.
+ */
+- (void)appendReceivedData:(NSData *)data toBuffer:(NSMutableData *)buffer;
+/**
+ Removes downloaded data stored in buffer.
+ 
+ You could not override this method, because its implementation is
+ fairly simple.
+ 
+ @param buffer Existing buffer.
+ @warning Buffer could be deallocated after this call.
+ */
+- (void)emptyBuffer:(NSMutableData *)buffer;
 @end

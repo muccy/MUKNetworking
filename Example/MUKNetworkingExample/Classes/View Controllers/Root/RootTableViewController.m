@@ -60,12 +60,12 @@
     if (rowsData_ == nil) {
         __unsafe_unretained RootTableViewController *weakSelf = self;
         
-        RootTableViewControllerRowData_ *URLConnectionRow = [RootTableViewControllerRowData_ rowDataWithTitle:@"URL Connection" subtitle:@"MUKURLConnection" selectionHandler:^{
+        RootTableViewControllerRowData_ *URLConnectionRow = [RootTableViewControllerRowData_ rowDataWithTitle:@"URL Connection" subtitle:@"MUKURLConnection, usesBuffer = NO" selectionHandler:^{
             URLConnectionViewController *viewController = [[URLConnectionViewController alloc] initWithNibName:nil bundle:nil];
             [weakSelf.navigationController pushViewController:viewController animated:YES];
         }];
         
-        RootTableViewControllerRowData_ *bufferedDownloadRow = [RootTableViewControllerRowData_ rowDataWithTitle:@"Buffered Download" subtitle:@"MUKBufferedDownload" selectionHandler:^{
+        RootTableViewControllerRowData_ *bufferedDownloadRow = [RootTableViewControllerRowData_ rowDataWithTitle:@"Buffered Download" subtitle:@"MUKURLConnection, usesBuffer = YES" selectionHandler:^{
             BufferedDownloadViewController *viewController = [[BufferedDownloadViewController alloc] initWithNibName:nil bundle:nil];
             [weakSelf.navigationController pushViewController:viewController animated:YES];
         }];

@@ -27,6 +27,13 @@
 #import "MUKURLConnectionTests.h"
 #import "MUKURLConnection.h"
 
+@interface MUKURLConnectionTests ()
+- (NSData *)mergedChunksToIndex_:(NSInteger)index chunks_:(NSArray *)chunks;
+- (NSString *)stringForChunksToIndex_:(NSInteger)index chunks_:(NSArray *)chunks;
+- (NSString *)bufferedString_:(MUKURLConnection *)connection;
+@end
+
+
 @implementation MUKURLConnectionTests
 
 - (void)testActivity {
@@ -166,8 +173,11 @@
     NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSArray *testChunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
-    long long chunksLength = [firstChunk length] + [secondChunk length];
-    
+        
+    NSMutableData *expectedData = [NSMutableData dataWithData:firstChunk]; 
+    [expectedData appendData:secondChunk];
+    long long chunksLength = [expectedData length];
+
     __block BOOL testsDone = NO;
     __unsafe_unretained MUKURLConnection *weakConnection = connection;
     connection.completionHandler = ^(BOOL success, NSError *error) {        
@@ -176,6 +186,8 @@
         
         STAssertEquals(weakConnection.receivedBytesCount, chunksLength, @"Received all data");
         STAssertEquals(weakConnection.receivedBytesCount, weakConnection.expectedBytesCount, @"Received all data");
+        
+        STAssertTrue([[weakConnection bufferedData] isEqualToData:expectedData], @"Data downloaded in buffer");
         
         testsDone = YES;
     };
@@ -194,6 +206,8 @@
     STAssertEquals(connection.receivedBytesCount, (long long)0, @"Received bytes should be 0 when connection is not active");
     STAssertEquals(connection.expectedBytesCount, NSURLResponseUnknownLength, @"Expected bytes are unknown when connection is not active");
     
+    STAssertEquals([[connection bufferedData] length], (NSUInteger)0, @"No buffered data after success handler returns");
+    
     [self unregisterTestURLProtocol];
 }
 
@@ -209,10 +223,13 @@
     
     NSError *expectedError = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorUnknown userInfo:nil];
     
+    __unsafe_unretained MUKURLConnection *weakConnection = connection;
     __block BOOL testsDone = NO;
     connection.completionHandler = ^(BOOL success, NSError *error) {        
         STAssertTrue(error.domain == expectedError.domain && error.code == expectedError.code, @"Error should match with expected one");
         STAssertFalse(success, @"Real failure");
+        
+        STAssertTrue([[weakConnection bufferedData] length] > 0, @"Something should be downloaded despite final error");
         
         testsDone = YES;
     };
@@ -231,6 +248,8 @@
     STAssertFalse([connection isActive], @"Connection should not be active after failure");
     STAssertEquals(connection.receivedBytesCount, (long long)0, @"Received bytes should be 0 when connection is not active");
     STAssertEquals(connection.expectedBytesCount, NSURLResponseUnknownLength, @"Expected bytes are unknown when connection is not active");
+    
+    STAssertEquals([[connection bufferedData] length], (NSUInteger)0, @"No buffered data after failure handler returns");
     
     [self unregisterTestURLProtocol];
 }
@@ -265,6 +284,126 @@
     STAssertEquals(connection.expectedBytesCount, NSURLResponseUnknownLength, @"Expected bytes are unknown when connection is not active");
     
     [self unregisterTestURLProtocol];
+}
+
+- (void)testBuffering {
+    // Setup connection
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.apple.com"]];
+    MUKURLConnection *connection = [[MUKURLConnection alloc] initWithRequest:request];
+    
+    // Setup chunks
+    NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSArray *chunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
+    
+    __unsafe_unretained MUKURLConnection *weakConnection = connection;
+    
+    __block NSInteger chunkIndex = 0;
+    __block BOOL progressTestsDone = NO;
+    connection.progressHandler = ^(NSData *data, float quota) {        
+        NSData *receivedChunks = [self mergedChunksToIndex_:chunkIndex chunks_:chunks];
+        NSData *bufferedData = [weakConnection bufferedData];
+        STAssertTrue([bufferedData isEqualToData:receivedChunks], @"Received data should be also buffered");
+        
+        chunkIndex++;
+        
+        if (chunkIndex >= [chunks count]) progressTestsDone = YES;
+    }; // progressHandler
+    
+    __block BOOL completionTestsDone = NO;
+    connection.completionHandler = ^(BOOL success, NSError *error) {        
+        NSData *receivedChunks = [self mergedChunksToIndex_:[chunks count]-1 chunks_:chunks];
+        NSData *bufferedData = [weakConnection bufferedData];
+        
+        STAssertTrue([bufferedData isEqualToData:receivedChunks], @"Received data should be also buffered");
+        
+        STAssertEquals((long long)[bufferedData length], weakConnection.expectedBytesCount, @"Buffer length should match with expected data length");
+        
+        completionTestsDone = YES;
+    }; // completionHandler
+    
+    [self registerTestURLProtocol];
+    [MUKTestURLProtocol setChunksToProduce:chunks];
+    
+    [connection start];
+    
+    BOOL done1 = [self waitForCompletion:&progressTestsDone timeout:5.0];
+    BOOL done2 = [self waitForCompletion:&completionTestsDone timeout:5.0];
+    
+    if (!done1 || !done2) {
+        STFail(@"Timeout");
+    }
+    
+    STAssertEquals([[connection bufferedData] length], (NSUInteger)0, @"No buffered data after failure handler returns");
+    
+    [self unregisterTestURLProtocol];
+}
+
+- (void)testNoBuffer {
+    // Setup connection
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.apple.com"]];
+    MUKURLConnection *connection = [[MUKURLConnection alloc] initWithRequest:request];
+    connection.usesBuffer = NO;
+    
+    // Setup chunks
+    NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSArray *chunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
+    
+    __unsafe_unretained MUKURLConnection *weakConnection = connection;
+    __block BOOL progressTestsDone = NO;
+    connection.progressHandler = ^(NSData *data, float quota) {      
+        STAssertEquals([[weakConnection bufferedData] length], (NSUInteger)0, @"Should not bufferize data");
+        progressTestsDone = YES;
+    }; // progressHandler
+    
+    __block BOOL completionTestsDone = NO;
+    connection.completionHandler = ^(BOOL success, NSError *error) {        
+        STAssertEquals([[weakConnection bufferedData] length], (NSUInteger)0, @"Should not bufferize data");
+        
+        completionTestsDone = YES;
+    }; // completionHandler
+    
+    [self registerTestURLProtocol];
+    [MUKTestURLProtocol setChunksToProduce:chunks];
+    
+    [connection start];
+    
+    BOOL done1 = [self waitForCompletion:&progressTestsDone timeout:5.0];
+    BOOL done2 = [self waitForCompletion:&completionTestsDone timeout:5.0];
+    
+    if (!done1 || !done2) {
+        STFail(@"Timeout");
+    }
+    
+    [self unregisterTestURLProtocol];
+}
+
+#pragma mark - Private
+
+- (NSData *)mergedChunksToIndex_:(NSInteger)index chunks_:(NSArray *)chunks {
+    NSMutableData *mutData = [NSMutableData data];
+    
+    [chunks enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (idx > index) {
+            *stop = YES;
+            return;
+        }
+        
+        [mutData appendData:obj];
+    }];
+    
+    return mutData;
+}
+
+- (NSString *)stringForChunksToIndex_:(NSInteger)index chunks_:(NSArray *)chunks
+{
+    NSData *data = [self mergedChunksToIndex_:index chunks_:chunks];
+    return [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
+- (NSString *)bufferedString_:(MUKURLConnection *)connection {
+    return [[[NSString alloc] initWithData:[connection bufferedData] encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
 @end

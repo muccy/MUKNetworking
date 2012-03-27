@@ -20,7 +20,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.title = @"MUKURLConnection";
+        self.title = @"Unbuffered Connection";
     }
     return self;
 }
@@ -49,6 +49,7 @@
 - (MUKURLConnection *)createConnection {
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.apple.com"]];
     MUKURLConnection *connection = [[MUKURLConnection alloc] initWithRequest:request];
+    connection.usesBuffer = NO;
     return connection;
 }
 

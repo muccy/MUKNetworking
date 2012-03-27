@@ -1,0 +1,435 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0605D7EA1519D345005F50A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0605D7E91519D345005F50A7 /* UIKit.framework */; };
+		0605D7EC1519D345005F50A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0605D7EB1519D345005F50A7 /* Foundation.framework */; };
+		0605D7EE1519D345005F50A7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0605D7ED1519D345005F50A7 /* CoreGraphics.framework */; };
+		0605D7F41519D345005F50A7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0605D7F21519D345005F50A7 /* InfoPlist.strings */; };
+		0605D7F61519D345005F50A7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0605D7F51519D345005F50A7 /* main.m */; };
+		0605D8201519D57C005F50A7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0605D81B1519D57C005F50A7 /* AppDelegate.m */; };
+		0605D8231519D5A1005F50A7 /* RootTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0605D8221519D5A1005F50A7 /* RootTableViewController.m */; };
+		0605D8271519DB80005F50A7 /* URLConnectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0605D8251519DB80005F50A7 /* URLConnectionViewController.m */; };
+		0605D8281519DB80005F50A7 /* URLConnectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0605D8261519DB80005F50A7 /* URLConnectionViewController.xib */; };
+		0605D82C1519DCC9005F50A7 /* ExampleBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0605D82B1519DCC9005F50A7 /* ExampleBaseViewController.m */; };
+		0605D8301519DCE8005F50A7 /* BufferedDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0605D82E1519DCE8005F50A7 /* BufferedDownloadViewController.m */; };
+		0605D8311519DCE8005F50A7 /* BufferedDownloadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0605D82F1519DCE8005F50A7 /* BufferedDownloadViewController.xib */; };
+		0616E6131521B1D300014231 /* libMUKNetworking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0616E60E1521B1B800014231 /* libMUKNetworking.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0616E60D1521B1B800014231 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0616E6041521B1B700014231 /* MUKNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0656683E1517A85A00DA53AA;
+			remoteInfo = MUKNetworking;
+		};
+		0616E60F1521B1B800014231 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0616E6041521B1B700014231 /* MUKNetworking.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0656684E1517A85A00DA53AA;
+			remoteInfo = MUKNetworkingTests;
+		};
+		0616E6111521B1C900014231 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0616E6041521B1B700014231 /* MUKNetworking.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0656683D1517A85A00DA53AA;
+			remoteInfo = MUKNetworking;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0605D7E51519D345005F50A7 /* MUKNetworkingExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MUKNetworkingExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0605D7E91519D345005F50A7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		0605D7EB1519D345005F50A7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		0605D7ED1519D345005F50A7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		0605D7F11519D345005F50A7 /* MUKNetworkingExample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MUKNetworkingExample-Info.plist"; sourceTree = "<group>"; };
+		0605D7F31519D345005F50A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0605D7F51519D345005F50A7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0605D7F71519D345005F50A7 /* MUKNetworkingExample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MUKNetworkingExample-Prefix.pch"; sourceTree = "<group>"; };
+		0605D81A1519D57C005F50A7 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		0605D81B1519D57C005F50A7 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		0605D8211519D5A1005F50A7 /* RootTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootTableViewController.h; sourceTree = "<group>"; };
+		0605D8221519D5A1005F50A7 /* RootTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootTableViewController.m; sourceTree = "<group>"; };
+		0605D8241519DB80005F50A7 /* URLConnectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLConnectionViewController.h; sourceTree = "<group>"; };
+		0605D8251519DB80005F50A7 /* URLConnectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLConnectionViewController.m; sourceTree = "<group>"; };
+		0605D8261519DB80005F50A7 /* URLConnectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = URLConnectionViewController.xib; sourceTree = "<group>"; };
+		0605D82A1519DCC9005F50A7 /* ExampleBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExampleBaseViewController.h; sourceTree = "<group>"; };
+		0605D82B1519DCC9005F50A7 /* ExampleBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExampleBaseViewController.m; sourceTree = "<group>"; };
+		0605D82D1519DCE8005F50A7 /* BufferedDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BufferedDownloadViewController.h; sourceTree = "<group>"; };
+		0605D82E1519DCE8005F50A7 /* BufferedDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BufferedDownloadViewController.m; sourceTree = "<group>"; };
+		0605D82F1519DCE8005F50A7 /* BufferedDownloadViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BufferedDownloadViewController.xib; sourceTree = "<group>"; };
+		0616E6041521B1B700014231 /* MUKNetworking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MUKNetworking.xcodeproj; path = ../MUKNetworking.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0605D7E21519D345005F50A7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0616E6131521B1D300014231 /* libMUKNetworking.a in Frameworks */,
+				0605D7EA1519D345005F50A7 /* UIKit.framework in Frameworks */,
+				0605D7EC1519D345005F50A7 /* Foundation.framework in Frameworks */,
+				0605D7EE1519D345005F50A7 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0605D7DA1519D344005F50A7 = {
+			isa = PBXGroup;
+			children = (
+				0605D7EF1519D345005F50A7 /* MUKNetworkingExample */,
+				0605D7E81519D345005F50A7 /* Frameworks */,
+				0605D7E61519D345005F50A7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0605D7E61519D345005F50A7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0605D7E51519D345005F50A7 /* MUKNetworkingExample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0605D7E81519D345005F50A7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0616E6041521B1B700014231 /* MUKNetworking.xcodeproj */,
+				0605D7E91519D345005F50A7 /* UIKit.framework */,
+				0605D7EB1519D345005F50A7 /* Foundation.framework */,
+				0605D7ED1519D345005F50A7 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0605D7EF1519D345005F50A7 /* MUKNetworkingExample */ = {
+			isa = PBXGroup;
+			children = (
+				0605D8181519D57C005F50A7 /* Classes */,
+				0605D7F01519D345005F50A7 /* Supporting Files */,
+			);
+			path = MUKNetworkingExample;
+			sourceTree = "<group>";
+		};
+		0605D7F01519D345005F50A7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0605D7F11519D345005F50A7 /* MUKNetworkingExample-Info.plist */,
+				0605D7F21519D345005F50A7 /* InfoPlist.strings */,
+				0605D7F51519D345005F50A7 /* main.m */,
+				0605D7F71519D345005F50A7 /* MUKNetworkingExample-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0605D8181519D57C005F50A7 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				0605D8191519D57C005F50A7 /* App delegate */,
+				0605D81C1519D57C005F50A7 /* View Controllers */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		0605D8191519D57C005F50A7 /* App delegate */ = {
+			isa = PBXGroup;
+			children = (
+				0605D81A1519D57C005F50A7 /* AppDelegate.h */,
+				0605D81B1519D57C005F50A7 /* AppDelegate.m */,
+			);
+			path = "App delegate";
+			sourceTree = "<group>";
+		};
+		0605D81C1519D57C005F50A7 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0605D8291519DCB8005F50A7 /* Example Base */,
+				0605D81D1519D57C005F50A7 /* Buffered Download */,
+				0605D81E1519D57C005F50A7 /* Root */,
+				0605D81F1519D57C005F50A7 /* URL Connection */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		0605D81D1519D57C005F50A7 /* Buffered Download */ = {
+			isa = PBXGroup;
+			children = (
+				0605D82D1519DCE8005F50A7 /* BufferedDownloadViewController.h */,
+				0605D82E1519DCE8005F50A7 /* BufferedDownloadViewController.m */,
+				0605D82F1519DCE8005F50A7 /* BufferedDownloadViewController.xib */,
+			);
+			path = "Buffered Download";
+			sourceTree = "<group>";
+		};
+		0605D81E1519D57C005F50A7 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				0605D8211519D5A1005F50A7 /* RootTableViewController.h */,
+				0605D8221519D5A1005F50A7 /* RootTableViewController.m */,
+			);
+			path = Root;
+			sourceTree = "<group>";
+		};
+		0605D81F1519D57C005F50A7 /* URL Connection */ = {
+			isa = PBXGroup;
+			children = (
+				0605D8241519DB80005F50A7 /* URLConnectionViewController.h */,
+				0605D8251519DB80005F50A7 /* URLConnectionViewController.m */,
+				0605D8261519DB80005F50A7 /* URLConnectionViewController.xib */,
+			);
+			path = "URL Connection";
+			sourceTree = "<group>";
+		};
+		0605D8291519DCB8005F50A7 /* Example Base */ = {
+			isa = PBXGroup;
+			children = (
+				0605D82A1519DCC9005F50A7 /* ExampleBaseViewController.h */,
+				0605D82B1519DCC9005F50A7 /* ExampleBaseViewController.m */,
+			);
+			path = "Example Base";
+			sourceTree = "<group>";
+		};
+		0616E6051521B1B700014231 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0616E60E1521B1B800014231 /* libMUKNetworking.a */,
+				0616E6101521B1B800014231 /* MUKNetworkingTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0605D7E41519D345005F50A7 /* MUKNetworkingExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0605D8031519D345005F50A7 /* Build configuration list for PBXNativeTarget "MUKNetworkingExample" */;
+			buildPhases = (
+				0605D7E11519D345005F50A7 /* Sources */,
+				0605D7E21519D345005F50A7 /* Frameworks */,
+				0605D7E31519D345005F50A7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0616E6121521B1C900014231 /* PBXTargetDependency */,
+			);
+			name = MUKNetworkingExample;
+			productName = MUKDownloadExample;
+			productReference = 0605D7E51519D345005F50A7 /* MUKNetworkingExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0605D7DC1519D344005F50A7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = 0605D7DF1519D344005F50A7 /* Build configuration list for PBXProject "MUKNetworkingExample" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 0605D7DA1519D344005F50A7;
+			productRefGroup = 0605D7E61519D345005F50A7 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 0616E6051521B1B700014231 /* Products */;
+					ProjectRef = 0616E6041521B1B700014231 /* MUKNetworking.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				0605D7E41519D345005F50A7 /* MUKNetworkingExample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		0616E60E1521B1B800014231 /* libMUKNetworking.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libMUKNetworking.a;
+			remoteRef = 0616E60D1521B1B800014231 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0616E6101521B1B800014231 /* MUKNetworkingTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MUKNetworkingTests.octest;
+			remoteRef = 0616E60F1521B1B800014231 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0605D7E31519D345005F50A7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0605D7F41519D345005F50A7 /* InfoPlist.strings in Resources */,
+				0605D8281519DB80005F50A7 /* URLConnectionViewController.xib in Resources */,
+				0605D8311519DCE8005F50A7 /* BufferedDownloadViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0605D7E11519D345005F50A7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0605D7F61519D345005F50A7 /* main.m in Sources */,
+				0605D8201519D57C005F50A7 /* AppDelegate.m in Sources */,
+				0605D8231519D5A1005F50A7 /* RootTableViewController.m in Sources */,
+				0605D8271519DB80005F50A7 /* URLConnectionViewController.m in Sources */,
+				0605D82C1519DCC9005F50A7 /* ExampleBaseViewController.m in Sources */,
+				0605D8301519DCE8005F50A7 /* BufferedDownloadViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0616E6121521B1C900014231 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MUKNetworking;
+			targetProxy = 0616E6111521B1C900014231 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		0605D7F21519D345005F50A7 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0605D7F31519D345005F50A7 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0605D8011519D345005F50A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv7,
+					armv6,
+				);
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		0605D8021519D345005F50A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv7,
+					armv6,
+				);
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0605D8041519D345005F50A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MUKNetworkingExample/MUKNetworkingExample-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
+				INFOPLIST_FILE = "MUKNetworkingExample/MUKNetworkingExample-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				PRODUCT_NAME = MUKNetworkingExample;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		0605D8051519D345005F50A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MUKNetworkingExample/MUKNetworkingExample-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
+				INFOPLIST_FILE = "MUKNetworkingExample/MUKNetworkingExample-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				PRODUCT_NAME = MUKNetworkingExample;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0605D7DF1519D344005F50A7 /* Build configuration list for PBXProject "MUKNetworkingExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0605D8011519D345005F50A7 /* Debug */,
+				0605D8021519D345005F50A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0605D8031519D345005F50A7 /* Build configuration list for PBXNativeTarget "MUKNetworkingExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0605D8041519D345005F50A7 /* Debug */,
+				0605D8051519D345005F50A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0605D7DC1519D344005F50A7 /* Project object */;
+}

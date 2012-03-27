@@ -1,6 +1,6 @@
-MUKDownload
+MUKNetworking
 ===========
-MUKDownload is a simple, block-based, ARC-enabled wrapper around `NSURLConnection` for iOS 4+.
+MUKNetworking is a simple, block-based, ARC-enabled library built around `NSURLConnection` for iOS 4+.
 If you do need more complex solutions, please look at great frameworks like [AFNetworking].
 
 Requirements
@@ -16,8 +16,8 @@ Installation
 
 #### Step 0: clone project from GitHub
 
-#### Step 1: add MUKDownload to your project
-Drag or *Add To Files...* `MUKDownload.xcodeproj` to your project.
+#### Step 1: add MUKNetworking to your project
+Drag or *Add To Files...* `MUKNetworking.xcodeproj` to your project.
 <img src="http://i.imgur.com/iR0IM.png" />
 
 Please remember not to create a copy of files while adding project: you only need a reference to it.
@@ -27,23 +27,23 @@ Please remember not to create a copy of files while adding project: you only nee
 Click on your project and, then, your app target:
 <img src="http://i.imgur.com/LiUR9.png" />
 
-Add dependency clicking on + button in *Target Dependencies* pane and choosing static library target (`MUKDownload`):
+Add dependency clicking on + button in *Target Dependencies* pane and choosing static library target (`MUKNetworking`):
 <img src="http://i.imgur.com/fiPyX.png" />
 
-Link your project clicking on + button in *Link binary with Libraries* pane and choosing static library product (`libMUKDownload.a`):
+Link your project clicking on + button in *Link binary with Libraries* pane and choosing static library product (`libMUKNetworking.a`):
 <img src="http://i.imgur.com/uyNVM.png" />
 
 Your project, now, should be like this:
 <img src="http://i.imgur.com/ayOVu.png" />
 
 #### Step 3: import headers
-You only need to write `#import <MUKDownload/MUKDownload.h>` when you need headers.
-You can also import `MUKDownload` headers in your `pch` file:
+You only need to write `#import <MUKNetworking/MUKNetworking.h>` when you need headers.
+You can also import `MUKNetworking` headers in your `pch` file:
 <img src="http://i.imgur.com/XcW35.png" />
 
 Documentation
 -------------
-Build `MUKDownloadDocumentation` target in order to install documentation in Xcode.
+Build `MUKNetworkingDocumentation` target in order to install documentation in Xcode.
 *Requirement*: [appledoc] awesome project.
 *TODO*: online documentation.
 

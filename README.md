@@ -18,33 +18,45 @@ Installation
 
 #### Step 1: add MUKNetworking to your project
 Drag or *Add To Files...* `MUKNetworking.xcodeproj` to your project.
-<img src="http://i.imgur.com/iR0IM.png" />
+
+<img src="http://i.imgur.com/Nm7AI.png" />
 
 Please remember not to create a copy of files while adding project: you only need a reference to it.
-<img src="http://i.imgur.com/xJUfM.png" />
+
+<img src="http://i.imgur.com/Zz5cu.png" />
+
 
 #### Step 2: make your project dependent
 Click on your project and, then, your app target:
-<img src="http://i.imgur.com/LiUR9.png" />
+
+<img src="http://i.imgur.com/bwcFl.png" />
 
 Add dependency clicking on + button in *Target Dependencies* pane and choosing static library target (`MUKNetworking`):
-<img src="http://i.imgur.com/fiPyX.png" />
+
+<img src="http://i.imgur.com/HUeaw.png" />
 
 Link your project clicking on + button in *Link binary with Libraries* pane and choosing static library product (`libMUKNetworking.a`):
-<img src="http://i.imgur.com/uyNVM.png" />
+
+<img src="http://i.imgur.com/g947s.png" />
 
 Your project, now, should be like this:
-<img src="http://i.imgur.com/ayOVu.png" />
+
+<img src="http://i.imgur.com/ghTw8.png" />
+
 
 #### Step 3: import headers
 You only need to write `#import <MUKNetworking/MUKNetworking.h>` when you need headers.
 You can also import `MUKNetworking` headers in your `pch` file:
-<img src="http://i.imgur.com/XcW35.png" />
+
+<img src="http://i.imgur.com/9uJWj.png" />
+
 
 Documentation
 -------------
 Build `MUKNetworkingDocumentation` target in order to install documentation in Xcode.
+
 *Requirement*: [appledoc] awesome project.
+
 *TODO*: online documentation.
 
 Usage

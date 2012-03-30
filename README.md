@@ -48,7 +48,7 @@ Your project, now, should be like this:
 You only need to write `#import <MUKNetworking/MUKNetworking.h>` when you need headers.
 You can also import `MUKNetworking` headers in your `pch` file:
 
-<img src="http://i.imgur.com/9uJWj.png" />
+<img src="http://i.imgur.com/sen5Q.png" />
 
 
 Documentation

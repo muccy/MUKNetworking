@@ -21,6 +21,12 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		06004937154B1385004A3B17 /* MUKURLConnectionQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 06004935154B1385004A3B17 /* MUKURLConnectionQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		06004938154B1385004A3B17 /* MUKURLConnectionQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 06004936154B1385004A3B17 /* MUKURLConnectionQueue.m */; };
+		0600493D154B1408004A3B17 /* MUKURLConnectionOperation_.h in Headers */ = {isa = PBXBuildFile; fileRef = 0600493B154B1408004A3B17 /* MUKURLConnectionOperation_.h */; };
+		0600493E154B1408004A3B17 /* MUKURLConnectionOperation_.m in Sources */ = {isa = PBXBuildFile; fileRef = 0600493C154B1408004A3B17 /* MUKURLConnectionOperation_.m */; };
+		06004940154B1549004A3B17 /* MUKURLConnection_Queue.h in Headers */ = {isa = PBXBuildFile; fileRef = 0600493F154B1549004A3B17 /* MUKURLConnection_Queue.h */; };
+		06004944154B22F3004A3B17 /* MUKURLConnectionQueueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 06004943154B22F3004A3B17 /* MUKURLConnectionQueueTests.m */; };
 		0616E5D81521AF7E00014231 /* MUKURLConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 0616E5D21521AF7E00014231 /* MUKURLConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0616E5D91521AF7E00014231 /* MUKURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 0616E5D31521AF7E00014231 /* MUKURLConnection.m */; };
 		0616E5DA1521AF7E00014231 /* MUKNetworking-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 0616E5D41521AF7E00014231 /* MUKNetworking-Prefix.pch */; };
@@ -47,6 +53,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		06004935154B1385004A3B17 /* MUKURLConnectionQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKURLConnectionQueue.h; sourceTree = "<group>"; };
+		06004936154B1385004A3B17 /* MUKURLConnectionQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKURLConnectionQueue.m; sourceTree = "<group>"; };
+		0600493B154B1408004A3B17 /* MUKURLConnectionOperation_.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKURLConnectionOperation_.h; sourceTree = "<group>"; };
+		0600493C154B1408004A3B17 /* MUKURLConnectionOperation_.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKURLConnectionOperation_.m; sourceTree = "<group>"; };
+		0600493F154B1549004A3B17 /* MUKURLConnection_Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKURLConnection_Queue.h; sourceTree = "<group>"; };
+		06004942154B22F3004A3B17 /* MUKURLConnectionQueueTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKURLConnectionQueueTests.h; sourceTree = "<group>"; };
+		06004943154B22F3004A3B17 /* MUKURLConnectionQueueTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKURLConnectionQueueTests.m; sourceTree = "<group>"; };
 		0616E5D21521AF7E00014231 /* MUKURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKURLConnection.h; sourceTree = "<group>"; };
 		0616E5D31521AF7E00014231 /* MUKURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKURLConnection.m; sourceTree = "<group>"; };
 		0616E5D41521AF7E00014231 /* MUKNetworking-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MUKNetworking-Prefix.pch"; path = "MUKNetworking/MUKNetworking-Prefix.pch"; sourceTree = "<group>"; };
@@ -90,10 +103,48 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		06004933154B136F004A3B17 /* Queue */ = {
+			isa = PBXGroup;
+			children = (
+				06004939154B13ED004A3B17 /* Private */,
+				06004935154B1385004A3B17 /* MUKURLConnectionQueue.h */,
+				06004936154B1385004A3B17 /* MUKURLConnectionQueue.m */,
+			);
+			path = Queue;
+			sourceTree = "<group>";
+		};
+		06004939154B13ED004A3B17 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				0600493A154B13ED004A3B17 /* Operation */,
+				0600493F154B1549004A3B17 /* MUKURLConnection_Queue.h */,
+			);
+			path = Private;
+			sourceTree = "<group>";
+		};
+		0600493A154B13ED004A3B17 /* Operation */ = {
+			isa = PBXGroup;
+			children = (
+				0600493B154B1408004A3B17 /* MUKURLConnectionOperation_.h */,
+				0600493C154B1408004A3B17 /* MUKURLConnectionOperation_.m */,
+			);
+			path = Operation;
+			sourceTree = "<group>";
+		};
+		06004941154B22C9004A3B17 /* Queue */ = {
+			isa = PBXGroup;
+			children = (
+				06004942154B22F3004A3B17 /* MUKURLConnectionQueueTests.h */,
+				06004943154B22F3004A3B17 /* MUKURLConnectionQueueTests.m */,
+			);
+			path = Queue;
+			sourceTree = "<group>";
+		};
 		0616E5CD1521AF7E00014231 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
 				0616E5D11521AF7E00014231 /* URL Connection */,
+				06004933154B136F004A3B17 /* Queue */,
 			);
 			name = Classes;
 			path = MUKNetworking/Classes;
@@ -113,6 +164,7 @@
 			children = (
 				0616E5DD1521AF8900014231 /* Base */,
 				0616E5E91521AF8900014231 /* URL Connection */,
+				06004941154B22C9004A3B17 /* Queue */,
 				0616E5E31521AF8900014231 /* InfoPlist.strings */,
 				0616E5E51521AF8900014231 /* MUKNetworkingTests-Info.plist */,
 				0616E5E61521AF8900014231 /* Testing URL Protocol */,
@@ -190,6 +242,9 @@
 				0616E5D81521AF7E00014231 /* MUKURLConnection.h in Headers */,
 				0616E5DB1521AF7E00014231 /* MUKNetworking.h in Headers */,
 				0616E5DA1521AF7E00014231 /* MUKNetworking-Prefix.pch in Headers */,
+				06004937154B1385004A3B17 /* MUKURLConnectionQueue.h in Headers */,
+				0600493D154B1408004A3B17 /* MUKURLConnectionOperation_.h in Headers */,
+				06004940154B1549004A3B17 /* MUKURLConnection_Queue.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,7 +365,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/appledoc \\\n--project-name \"MUKNetworking\" \\\n--project-company \"MeLive\" \\\n--company-id \"it.melive\" \\\n--output \"Documentation\" \\\n--logformat xcode \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--no-repeat-first-par \\\n--no-warn-invalid-crossref \\\n--ignore \"*.m\" \\\n--ignore \"Unit Tests\" \\\n--ignore \"Example\" \\\n--exit-threshold 2 \\\n\"${PROJECT_DIR}\"";
+			shellScript = "/usr/local/bin/appledoc \\\n--project-name \"MUKNetworking\" \\\n--project-company \"MeLive\" \\\n--company-id \"it.melive\" \\\n--output \"Documentation\" \\\n--logformat xcode \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--no-repeat-first-par \\\n--no-warn-invalid-crossref \\\n--ignore \"*.m\" \\\n--ignore \"Unit Tests\" \\\n--ignore \"Example\" \\\n--ignore \"Private\" \\\n--exit-threshold 2 \\\n\"${PROJECT_DIR}\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -320,6 +375,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0616E5D91521AF7E00014231 /* MUKURLConnection.m in Sources */,
+				06004938154B1385004A3B17 /* MUKURLConnectionQueue.m in Sources */,
+				0600493E154B1408004A3B17 /* MUKURLConnectionOperation_.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,6 +387,7 @@
 				0616E5EC1521AF8900014231 /* MUKNetworkingBaseTests.m in Sources */,
 				0616E5F01521AF8900014231 /* MUKTestURLProtocol.m in Sources */,
 				0616E5F11521AF8900014231 /* MUKURLConnectionTests.m in Sources */,
+				06004944154B22F3004A3B17 /* MUKURLConnectionQueueTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

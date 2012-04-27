@@ -25,6 +25,7 @@
 
 
 #import "MUKURLConnection.h"
+#import "MUKURLConnection_Queue.h"
 
 float const MUKURLConnectionUnknownQuota = -1.0f;
 
@@ -51,6 +52,8 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 
 @synthesize connection_;
 @synthesize buffer_;
+
+@synthesize operationCompletionHandler_ = operationCompletionHandler__;
 
 
 - (id)init {
@@ -103,7 +106,14 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 #pragma mark - Callbacks
 
 - (void)didFailWithError:(NSError *)error {
-    if (self.completionHandler) self.completionHandler(NO, error);
+    if (self.operationCompletionHandler_) {
+        self.operationCompletionHandler_(NO, error);
+    }
+    
+    if (self.completionHandler) {
+        self.completionHandler(NO, error);
+    }
+    
     [self nullifyInternalURLConnection_];
     [self emptyBufferIfNeeded_];
 }
@@ -138,7 +148,14 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 }
 
 - (void)didFinishLoading {
-    if (self.completionHandler) self.completionHandler(YES, nil);
+    if (self.operationCompletionHandler_) {
+        self.operationCompletionHandler_(YES, nil);
+    }
+    
+    if (self.completionHandler) {
+        self.completionHandler(YES, nil);
+    }
+    
     [self nullifyInternalURLConnection_];
     [self emptyBufferIfNeeded_];
 }

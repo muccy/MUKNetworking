@@ -26,5 +26,12 @@
 #import "MUKURLConnection.h"
 
 @interface MUKURLConnection ()
+/*
+ Called before completionHandler
+ */
 @property (nonatomic, copy) MUKURLConnectionCompletionHandler operationCompletionHandler_;
+/*
+ Called when -cancel is invoked
+ */
+@property (nonatomic, copy) void (^operationCancelHandler_)(void);
 @end

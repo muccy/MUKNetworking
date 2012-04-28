@@ -54,6 +54,7 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 @synthesize buffer_;
 
 @synthesize operationCompletionHandler_ = operationCompletionHandler__;
+@synthesize operationCancelHandler_ = operationCancelHandler__;
 
 
 - (id)init {
@@ -93,6 +94,10 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 }
 
 - (BOOL)cancel {
+    if (self.operationCancelHandler_) {
+        self.operationCancelHandler_();
+    }
+    
     if ([self isActive] == NO) {
         return NO;
     }

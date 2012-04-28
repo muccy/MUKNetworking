@@ -26,61 +26,94 @@
 #import "MUKURLConnectionOperation_.h"
 #import "MUKURLConnection_Queue.h"
 
+#define DEBUG_LOG      0
+
 @interface MUKURLConnectionOperation_ ()
-@property (nonatomic) BOOL connectionFinished_;
+@property (nonatomic, strong, readwrite) MUKURLConnection *connection;
+@property (nonatomic) BOOL connectionFinished_, connectionCancelled_, mainCalled_;
+
+// Pay attention that currentQueue_ could be main queue before -main
+// is called (so don't use dispatch_sync)
+@property (nonatomic) dispatch_queue_t currentQueue_;
+
+- (void)setupHandlers_;
 @end
 
 @implementation MUKURLConnectionOperation_
 @synthesize connection = connection_;
 @synthesize connectionWillStartHandler = connectionWillStartHandler_;
-@synthesize connectionDidFinishHandler = connectionDidFinishHandler_;
-@synthesize connectionFinished_ = connectionFinished__;
+
+@synthesize connectionFinished_ = connectionFinished__, connectionCancelled_ = connectionCancelled__, mainCalled_ = mainCalled__;
+@synthesize currentQueue_ = currentQueue__;
+
+- (id)initWithConnection:(MUKURLConnection *)connection {
+    self = [super init];
+    if (self) {
+#if DEBUG_LOG
+        NSLog(@"Connection operation init (%@)", connection);
+#endif
+        self.connection = connection;
+        self.currentQueue_ = dispatch_get_current_queue();
+        [self setupHandlers_];
+    }
+    return self;
+}
 
 - (void)dealloc {
+#if DEBUG_LOG
+    NSLog(@"Connection operation dealloc (%@)", self.connection);
+#endif
+    self.connection.operationCancelHandler_ = nil;
     self.connection.operationCompletionHandler_ = nil;
+    
     self.connectionWillStartHandler = nil;
-    self.connectionDidFinishHandler = nil;
+    self.completionBlock = nil;
 }
+
+#pragma mark - Overrides
 
 - (void)main {  
-    dispatch_queue_t currentQueue = dispatch_get_current_queue();
-    __unsafe_unretained MUKURLConnectionOperation_ *weakSelf = self;
+#if DEBUG_LOG
+    NSLog(@"Connection operation main (%@)", self.connection);
+#endif
+    self.mainCalled_ = YES;
+    self.currentQueue_ = dispatch_get_current_queue();
     
-    self.connection.operationCompletionHandler_ = ^(BOOL success, NSError *error) {
-        // Called in main queue
-        // Set connectionFinished_ in operation's queue
-        dispatch_async(currentQueue, ^{
-            weakSelf.connectionFinished_ = YES;
-            
-            if (self.connectionDidFinishHandler) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    self.connectionDidFinishHandler(success, error);
-                });
+    if (self.connectionCancelled_) {
+#if DEBUG_LOG
+        NSLog(@"Connection operation cancelled in main (%@)", self.connection);
+#endif
+        [self cancel];
+        return;
+    }
+ 
+    if (![self isCancelled]) {
+        // Start connection
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.connectionWillStartHandler) {
+                self.connectionWillStartHandler();
             }
+            
+            // Schedule connection on main run loop
+#if DEBUG_LOG
+            NSLog(@"Connection operation started (%@)", self.connection);
+#endif
+            [self.connection start];
         });
-    };
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.connectionWillStartHandler) {
-            self.connectionWillStartHandler();
-        }
-        
-        // Schedule connection on main run loop
-        [self.connection start];
-    });
+    }
 }
 
-- (void)cancel {
-    [super cancel];
-    
-    self.connection.operationCompletionHandler_ = nil;
-    self.connectionWillStartHandler = nil;
-    self.connectionDidFinishHandler = nil;
-    
+- (void)cancel {    
     // Cancel connection
     [self.connection cancel];
     
-    self.connectionFinished_ = YES;
+    /*
+     Mark operation as finished (without KVO because signal to queue
+     arrives from [super cancel])
+     */
+    connectionFinished__ = YES;
+    
+    [super cancel];
 }
 
 - (BOOL)isFinished {
@@ -94,7 +127,41 @@
         [self willChangeValueForKey:@"isFinished"];
         connectionFinished__ = connectionFinished_;
         [self didChangeValueForKey:@"isFinished"];
+        
+#if DEBUG_LOG
+        NSLog(@"Connection operation finished flag changed to %i (%@)", connectionFinished_, self.connection);
+#endif
     }
+}
+
+#pragma mark - Private
+
+- (void)setupHandlers_ {
+    __unsafe_unretained MUKURLConnectionOperation_ *weakSelf = self;
+    
+    self.connection.operationCancelHandler_ = ^{
+        // Called in main queue
+        MUKURLConnectionOperation_ *strongSelf = weakSelf;
+        
+        // Cancel operation in current queue
+        dispatch_async(strongSelf.currentQueue_, ^{
+            strongSelf.connectionCancelled_ = YES;
+            
+            if (strongSelf.mainCalled_) {
+                [strongSelf cancel];
+            }
+        });
+    };
+    
+    self.connection.operationCompletionHandler_ = ^(BOOL success, NSError *error) {
+        // Called in main queue
+        MUKURLConnectionOperation_ *strongSelf = weakSelf;
+        
+        // Set connectionFinished_ in current queue
+        dispatch_async(strongSelf.currentQueue_, ^{
+            strongSelf.connectionFinished_ = YES;
+        });
+    };
 }
 
 @end

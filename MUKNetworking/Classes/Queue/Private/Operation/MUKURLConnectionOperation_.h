@@ -27,9 +27,9 @@
 #import <MUKNetworking/MUKURLConnection.h>
 
 @interface MUKURLConnectionOperation_ : NSOperation
-@property (nonatomic, strong) MUKURLConnection *connection;
+- (id)initWithConnection:(MUKURLConnection *)connection;
+@property (nonatomic, strong, readonly) MUKURLConnection *connection;
 
 // Called on main queue
 @property (nonatomic, copy) void (^connectionWillStartHandler)(void);
-@property (nonatomic, copy) void (^connectionDidFinishHandler)(BOOL success, NSError *error);
 @end

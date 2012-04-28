@@ -79,8 +79,9 @@
     __block MUKURLConnection *lastDidFinishConnection = nil;
     __block NSInteger didFinishConnectionCount = 0;
     __block BOOL allConnectionsStopped = NO;
-    queue.connectionDidFinishHandler = ^(MUKURLConnection *conn, BOOL success, NSError *error)
+    queue.connectionDidFinishHandler = ^(MUKURLConnection *conn, BOOL cancelled)
     {
+        STAssertFalse(cancelled, @"Not cancelled");
         lastDidFinishConnection = conn;
         didFinishConnectionCount++;
         allConnectionsStopped = (didFinishConnectionCount == kConnectionsCount);
@@ -90,13 +91,13 @@
     [queue addConnection:connection1];
     [queue addConnection:connection2];
     
-    BOOL done1 = [self waitForCompletion:&completion1TestsDone timeout:5.0];
-    BOOL done2 = [self waitForCompletion:&completion2TestsDone timeout:5.0];
+    BOOL done1 = [self waitForCompletion:&completion1TestsDone timeout:2.0];
+    BOOL done2 = [self waitForCompletion:&completion2TestsDone timeout:2.0];
     if (!done1 || !done2) STFail(@"Timeout");
     
     STAssertTrue([completion2Date compare:completion1Date] == NSOrderedDescending, nil);
     
-    BOOL done3 = [self waitForCompletion:&allConnectionsStopped timeout:5.0];
+    BOOL done3 = [self waitForCompletion:&allConnectionsStopped timeout:2.0];
     if (!done3) STFail(@"Timeout");
     
     STAssertEquals((NSUInteger)0, [[queue connections] count], @"No more connections enqueued");
@@ -106,6 +107,8 @@
     STAssertEqualObjects(lastDidFinishConnection, connection2, @"Connection2 after Connection2");
     
     [self unregisterTestURLProtocol];
+    queue.connectionWillStartHandler = nil;
+    queue.connectionDidFinishHandler = nil;
 }
 
 - (void)testEnqueueingGroup {
@@ -160,8 +163,9 @@
     __block MUKURLConnection *lastDidFinishConnection = nil;
     __block NSInteger didFinishConnectionCount = 0;
     __block BOOL allConnectionsStopped = NO;
-    queue.connectionDidFinishHandler = ^(MUKURLConnection *conn, BOOL success, NSError *error)
+    queue.connectionDidFinishHandler = ^(MUKURLConnection *conn, BOOL cancelled)
     {
+        STAssertFalse(cancelled, @"Not cancelled");
         lastDidFinishConnection = conn;
         didFinishConnectionCount++;
         allConnectionsStopped = (didFinishConnectionCount == kConnectionsCount);
@@ -170,13 +174,13 @@
     // Add connections
     [queue addConnections:connections];
     
-    BOOL done1 = [self waitForCompletion:&completion1TestsDone timeout:5.0];
-    BOOL done2 = [self waitForCompletion:&completion2TestsDone timeout:5.0];
+    BOOL done1 = [self waitForCompletion:&completion1TestsDone timeout:2.0];
+    BOOL done2 = [self waitForCompletion:&completion2TestsDone timeout:2.0];
     if (!done1 || !done2) STFail(@"Timeout");
     
     STAssertTrue([completion2Date compare:completion1Date] == NSOrderedDescending, nil);
     
-    BOOL done3 = [self waitForCompletion:&allConnectionsStopped timeout:5.0];
+    BOOL done3 = [self waitForCompletion:&allConnectionsStopped timeout:2.0];
     if (!done3) STFail(@"Timeout");
     
     STAssertEquals((NSUInteger)0, [[queue connections] count], @"No more connections enqueued");
@@ -186,6 +190,123 @@
     STAssertEqualObjects(lastDidFinishConnection, connection2, @"Connection2 after Connection1");
     
     [self unregisterTestURLProtocol];
+    queue.connectionWillStartHandler = nil;
+    queue.connectionDidFinishHandler = nil;
+}
+
+- (void)testConnectionCancellation {
+    // Setup connection
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.apple.com"]];
+    MUKURLConnection *connection1 = [[MUKURLConnection alloc] initWithRequest:request];
+    MUKURLConnection *connection2 = [[MUKURLConnection alloc] initWithRequest:request];
+    MUKURLConnection *cancelledConnection = connection2;
+    NSArray *connections = [[NSArray alloc] initWithObjects:connection1, connection2, nil];
+    NSInteger const kConnectionsCount = 2;
+    
+    // Setup chunks
+    NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSArray *chunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
+    
+    [self registerTestURLProtocol];
+    [MUKTestURLProtocol setChunksToProduce:chunks];
+    
+    // Create a queue
+    MUKURLConnectionQueue *queue = [[MUKURLConnectionQueue alloc] init];
+    queue.maximumConcurrentConnections = 1;
+    queue.name = @"it.melive.mukit.mukknetworking.tests";
+    
+    __block MUKURLConnection *lastDidFinishConnection = nil;
+    __block NSInteger didFinishConnectionCount = 0;
+    __block BOOL allConnectionsStopped = NO;
+    __block BOOL connectionCancellationSignaled = NO;
+    queue.connectionDidFinishHandler = ^(MUKURLConnection *conn, BOOL cancelled)
+    {        
+        if (cancelledConnection == conn) {
+            STAssertTrue(cancelled, @"Cancelled");
+            connectionCancellationSignaled = cancelled;
+        }
+        else {
+            STAssertFalse(cancelled, @"Not cancelled");
+        }
+        
+        lastDidFinishConnection = conn;
+        didFinishConnectionCount++;
+        allConnectionsStopped = (didFinishConnectionCount == kConnectionsCount);
+    };
+    
+    // Add connections
+    queue.suspended = YES;
+    [queue addConnections:connections];
+    
+    // Cancel
+    [cancelledConnection cancel];
+    queue.suspended = NO;
+    
+    BOOL done = [self waitForCompletion:&allConnectionsStopped timeout:2.0];
+    if (!done) STFail(@"Timeout");
+    
+    STAssertEquals((NSUInteger)0, [[queue connections] count], @"No more connections enqueued");
+    STAssertEquals(kConnectionsCount, didFinishConnectionCount, @"%i connections dequeued", didFinishConnectionCount);
+    STAssertEqualObjects(lastDidFinishConnection, connection2, @"Connection2 after Connection1");
+    STAssertTrue(connectionCancellationSignaled, @"Connection2 signaled");
+    
+    [self unregisterTestURLProtocol];
+    queue.connectionWillStartHandler = nil;
+    queue.connectionDidFinishHandler = nil;
+}
+
+- (void)testAllConnectionsCancellation {
+    // Setup connection
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.apple.com"]];
+    MUKURLConnection *connection1 = [[MUKURLConnection alloc] initWithRequest:request];
+    MUKURLConnection *connection2 = [[MUKURLConnection alloc] initWithRequest:request];
+    NSArray *connections = [[NSArray alloc] initWithObjects:connection1, connection2, nil];
+    NSInteger const kConnectionsCount = 2;
+    
+    // Setup chunks
+    NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSArray *chunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
+    
+    [self registerTestURLProtocol];
+    [MUKTestURLProtocol setChunksToProduce:chunks];
+    
+    // Create a queue
+    MUKURLConnectionQueue *queue = [[MUKURLConnectionQueue alloc] init];
+    queue.maximumConcurrentConnections = 1;
+    queue.name = @"it.melive.mukit.mukknetworking.tests";
+    
+    __block MUKURLConnection *lastDidFinishConnection = nil;
+    __block NSInteger didFinishConnectionCount = 0;
+    __block BOOL allConnectionsStopped = NO;
+    queue.connectionDidFinishHandler = ^(MUKURLConnection *conn, BOOL cancelled)
+    {        
+        STAssertTrue(cancelled, @"Cancelled");
+        
+        lastDidFinishConnection = conn;
+        didFinishConnectionCount++;
+        allConnectionsStopped = (didFinishConnectionCount == kConnectionsCount);
+    };
+    
+    // Add connections
+    queue.suspended = YES;
+    [queue addConnections:connections];
+    
+    // Cancel
+    [queue cancelAllConnections];
+    queue.suspended = NO;
+    
+    BOOL done = [self waitForCompletion:&allConnectionsStopped timeout:2.0];
+    if (!done) STFail(@"Timeout");
+    
+    STAssertEquals((NSUInteger)0, [[queue connections] count], @"No more connections enqueued");
+    STAssertEquals(kConnectionsCount, didFinishConnectionCount, @"%i connections dequeued", didFinishConnectionCount);
+    STAssertEqualObjects(lastDidFinishConnection, connection2, @"Connection2 after Connection1");
+    
+    [self unregisterTestURLProtocol];
+    queue.connectionWillStartHandler = nil;
+    queue.connectionDidFinishHandler = nil;
 }
 
 @end

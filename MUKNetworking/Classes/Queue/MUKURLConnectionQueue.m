@@ -45,12 +45,22 @@ NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections = NSOperati
 
 #pragma mark - Methods
 
-- (void)addConnection:(MUKURLConnection *)connection {
+- (BOOL)addConnection:(MUKURLConnection *)connection {
     MUKURLConnectionOperation_ *op = [self newOperationFromConnection_:connection];
-    [self.queue_ addOperation:op];
+    
+    BOOL inserted;
+    @try {
+        [self.queue_ addOperation:op];
+        inserted = YES;
+    }
+    @catch (NSException *exception) {
+        inserted = NO;
+    }
+    
+    return inserted;
 }
 
-- (void)addConnections:(NSArray *)connections {
+- (BOOL)addConnections:(NSArray *)connections {
     NSMutableArray *operations = [[NSMutableArray alloc] initWithCapacity:[connections count]];
     [connections enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) 
     {
@@ -58,7 +68,16 @@ NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections = NSOperati
         [operations addObject:op];
     }];
     
-    [self.queue_ addOperations:operations waitUntilFinished:NO];
+    BOOL inserted;
+    @try {
+        [self.queue_ addOperations:operations waitUntilFinished:NO];
+        inserted = YES;
+    }
+    @catch (NSException *exception) {
+        inserted = NO;
+    }
+    
+    return inserted;
 }
 
 - (NSArray *)connections {
@@ -70,6 +89,15 @@ NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections = NSOperati
     }];
     
     return connectionOperations;
+}
+
+- (void)cancelAllConnections {
+    [[self.queue_ operations] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) 
+    {
+        if ([obj isKindOfClass:[MUKURLConnectionOperation_ class]]) {
+            [(MUKURLConnectionOperation_ *)obj cancel];
+        }
+    }];
 }
 
 #pragma mark - Accessors
@@ -112,21 +140,27 @@ NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections = NSOperati
 
 - (MUKURLConnectionOperation_ *)newOperationFromConnection_:(MUKURLConnection *)connection
 {
-    MUKURLConnectionOperation_ *op = [[MUKURLConnectionOperation_ alloc] init];
+    MUKURLConnectionOperation_ *op = [[MUKURLConnectionOperation_ alloc] initWithConnection:connection];
     __unsafe_unretained MUKURLConnectionOperation_ *weakOp = op;
     __unsafe_unretained MUKURLConnectionQueue *weakSelf = self;
-    
-    op.connection = connection;
-    
+        
     op.connectionWillStartHandler = ^{
         if (weakSelf.connectionWillStartHandler) {
             weakSelf.connectionWillStartHandler(weakOp.connection);
         }
     };
     
-    op.connectionDidFinishHandler = ^(BOOL success, NSError *error) {
+    op.completionBlock = ^{
         if (weakSelf.connectionDidFinishHandler) {
-            weakSelf.connectionDidFinishHandler(weakOp.connection, success, error);
+            // Capture variables strongly
+            BOOL cancelled = [weakOp isCancelled];
+            MUKURLConnection *conn = weakOp.connection;
+            void (^handler)(MUKURLConnection *, BOOL) = weakSelf.connectionDidFinishHandler;
+            
+            // Dispatch on main queue with captured variables
+            dispatch_async(dispatch_get_main_queue(), ^{
+                handler(conn, cancelled);
+            });
         }
     };
     

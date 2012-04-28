@@ -34,6 +34,9 @@ extern NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections;
  Say you should download 20 images: it is not a good practice to
  start 20 connections together. You could feed you connections into
  a queue and use handlers like you usually do.
+ 
+ @warning If you call [MUKURLConnection cancel], connection will be cancelled
+ also from queue execution.
  */
 @interface MUKURLConnectionQueue : NSObject
 /** @name Properties */
@@ -80,10 +83,15 @@ extern NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections;
  */
 @property (nonatomic, copy) void (^connectionWillStartHandler)(MUKURLConnection *connection);
 /**
- Handler called (in main queue) as connection has been removed
- from queue.
+ Handler called (in main queue) as connection has been removed from queue.
+ 
+ `cancelled` is `YES` if connection has been removed from queue after cancellation.
+ 
+ @warning Connection buffer could be already empy when this handler is called.
+ Please keep using [MUKURLConnection completionHandler]. This handler is useful
+ to observe queue status.
  */
-@property (nonatomic, copy) void (^connectionDidFinishHandler)(MUKURLConnection *connection, BOOL success, NSError *error);
+@property (nonatomic, copy) void (^connectionDidFinishHandler)(MUKURLConnection *connection, BOOL cancelled);
 
 /** @name Methods */
 /**
@@ -93,14 +101,12 @@ extern NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections;
  it finishes executing.
  
  @param connection Connection which will be enqueued.
- @exception NSInvalidArgumentException A connection object can be in
- at most one queue at a time and this method throws an 
- `NSInvalidArgumentException` exception if the connection is already 
- in another queue. Similarly, this method throws an
- `NSInvalidArgumentException` exception if the operation is 
- currently executing or has already finished executing.
+ @return `YES` if connection can be inserted. Mind that a connection
+ object can be in at most one queue at a time. Similarly, this method returns 
+ `NO` if the connection is currently executing or has already finished 
+ executing.
  */
-- (void)addConnection:(MUKURLConnection *)connection;
+- (BOOL)addConnection:(MUKURLConnection *)connection;
 /**
  Adds the specified array of connections to the queue.
  
@@ -108,18 +114,23 @@ extern NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections;
  they finish executing.
  
  @param connections The array of MUKURLConnection instances.
- @exception NSInvalidArgumentException A connection object can be in
- at most one connection queue at a time and cannot be added if it is 
- currently executing or finished. This method throws an 
- `NSInvalidArgumentException` exception if any of those error 
- conditions are true for any of the connections.
+ @return `YES` if connections can be inserted. Mind that a connection
+ object can be in at most one queue at a time. Similarly, this method returns 
+ `NO` if any of the connections is currently executing or has already finished 
+ executing.
  */
-- (void)addConnections:(NSArray *)connections;
+- (BOOL)addConnections:(NSArray *)connections;
 /**
  Connections queued at this moment.
  @return Connections in the queue, which could be either executing
  or waiting to be executed.
  */
 - (NSArray *)connections;
+/**
+ Cancels all queued and executing connections.
+ 
+ This method sends a cancel message to all connections currently in the queue.
+ */
+- (void)cancelAllConnections;
 
 @end

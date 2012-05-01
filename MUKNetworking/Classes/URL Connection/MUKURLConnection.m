@@ -258,8 +258,7 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
     if (self.runsInBackground) {
         if (self.backgroundTaskIdentifier_ == UIBackgroundTaskInvalid) 
         {
-            UIApplication *app = [UIApplication sharedApplication];
-            self.backgroundTaskIdentifier_ = [app beginBackgroundTaskWithExpirationHandler:^
+            self.backgroundTaskIdentifier_ = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^
             {
                 [self endBackgroundTaskIfNeeded_];
             }];
@@ -269,9 +268,12 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 
 - (void)endBackgroundTaskIfNeeded_ {
     if (self.backgroundTaskIdentifier_ != UIBackgroundTaskInvalid) {
-        UIApplication *app = [UIApplication sharedApplication];
-        [app endBackgroundTask:self.backgroundTaskIdentifier_];
+        // Set task identifier to UIBackgroundTaskInvalid before app is suspended
+        UIBackgroundTaskIdentifier tid = self.backgroundTaskIdentifier_;
         self.backgroundTaskIdentifier_ = UIBackgroundTaskInvalid;
+        
+        // End background task
+        [[UIApplication sharedApplication] endBackgroundTask:tid];
     }
 }
 

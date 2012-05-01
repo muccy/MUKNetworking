@@ -93,34 +93,49 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
     return (self.connection_ != nil);
 }
 
-- (BOOL)cancel {
+- (BOOL)cancel {    
+    BOOL success;
+    
+    if ([self isActive]) {
+        [self nullifyInternalURLConnection_];
+        [self emptyBufferIfNeeded_];
+        
+        success = YES;
+    }
+    else {
+        success = NO;
+    }
+    
+    /*
+     Call operation after every other task.
+     In this way, connection is retained by operation for sure, not 
+     depending to race conditions.
+     */
     if (self.operationCancelHandler_) {
         self.operationCancelHandler_();
     }
-    
-    if ([self isActive] == NO) {
-        return NO;
-    }
-    
-    [self nullifyInternalURLConnection_];
-    [self emptyBufferIfNeeded_];
-    
-    return YES;
+
+    return success;
 }
 
 #pragma mark - Callbacks
 
 - (void)didFailWithError:(NSError *)error {
-    if (self.operationCompletionHandler_) {
-        self.operationCompletionHandler_(NO, error);
-    }
-    
     if (self.completionHandler) {
         self.completionHandler(NO, error);
     }
     
     [self nullifyInternalURLConnection_];
     [self emptyBufferIfNeeded_];
+    
+    /*
+     Call operation after every other task.
+     In this way, connection is retained by operation for sure, not 
+     depending to race conditions.
+     */
+    if (self.operationCompletionHandler_) {
+        self.operationCompletionHandler_(NO, error);
+    }
 }
 
 - (void)didReceiveData:(NSData *)data {
@@ -152,17 +167,22 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
     return request;
 }
 
-- (void)didFinishLoading {
-    if (self.operationCompletionHandler_) {
-        self.operationCompletionHandler_(YES, nil);
-    }
-    
+- (void)didFinishLoading {    
     if (self.completionHandler) {
         self.completionHandler(YES, nil);
     }
     
     [self nullifyInternalURLConnection_];
     [self emptyBufferIfNeeded_];
+    
+    /*
+     Call operation after every other task.
+     In this way, connection is retained by operation for sure, not 
+     depending to race conditions.
+     */
+    if (self.operationCompletionHandler_) {
+        self.operationCompletionHandler_(YES, nil);
+    }
 }
 
 #pragma mark - Buffer

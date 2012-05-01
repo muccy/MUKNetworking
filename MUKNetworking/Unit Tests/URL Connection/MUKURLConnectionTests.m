@@ -26,6 +26,7 @@
 
 #import "MUKURLConnectionTests.h"
 #import "MUKURLConnection.h"
+#import "MUKURLConnection_Background.h"
 
 @interface MUKURLConnectionTests ()
 - (NSData *)mergedChunksToIndex_:(NSInteger)index chunks_:(NSArray *)chunks;

@@ -26,6 +26,7 @@
 
 #import "MUKURLConnection.h"
 #import "MUKURLConnection_Queue.h"
+#import "MUKURLConnection_Background.h"
 
 float const MUKURLConnectionUnknownQuota = -1.0f;
 
@@ -44,6 +45,7 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 @implementation MUKURLConnection
 @synthesize request = request_;
 @synthesize usesBuffer = usesBuffer_;
+@synthesize runsInBackground = runsInBackground_;
 @synthesize receivedBytesCount = receivedBytesCount_, expectedBytesCount = expectedBytesCount_;
 @synthesize completionHandler = completionHandler_;
 @synthesize responseHandler = responseHandler_;
@@ -52,6 +54,7 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 
 @synthesize connection_;
 @synthesize buffer_;
+@synthesize backgroundTaskIdentifier_ = backgroundTaskIdentifier__;
 
 @synthesize operationCompletionHandler_ = operationCompletionHandler__;
 @synthesize operationCancelHandler_ = operationCancelHandler__;
@@ -68,6 +71,7 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
         self.expectedBytesCount = NSURLResponseUnknownLength;
         self.request = request;
         self.usesBuffer = YES;
+        self.backgroundTaskIdentifier_ = UIBackgroundTaskInvalid;
     }
     return self;
 }
@@ -75,6 +79,7 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 - (void)dealloc {
     [self nullifyInternalURLConnection_];
     [self emptyBufferIfNeeded_];
+    [self endBackgroundTaskIfNeeded_];
 }
 
 #pragma mark - Connection
@@ -88,6 +93,7 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
         return NO;
     }
     
+    [self beginBackgroundTaskIfNeeded_];
     self.connection_ = [[NSURLConnection alloc] initWithRequest:self.request delegate:self];
     
     return (self.connection_ != nil);
@@ -114,6 +120,8 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
     if (self.operationCancelHandler_) {
         self.operationCancelHandler_();
     }
+    
+    [self endBackgroundTaskIfNeeded_];
 
     return success;
 }
@@ -136,6 +144,8 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
     if (self.operationCompletionHandler_) {
         self.operationCompletionHandler_(NO, error);
     }
+    
+    [self endBackgroundTaskIfNeeded_];
 }
 
 - (void)didReceiveData:(NSData *)data {
@@ -183,6 +193,8 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
     if (self.operationCompletionHandler_) {
         self.operationCompletionHandler_(YES, nil);
     }
+    
+    [self endBackgroundTaskIfNeeded_];
 }
 
 #pragma mark - Buffer
@@ -237,6 +249,31 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
     if (self.usesBuffer) {
         [self emptyBuffer:self.buffer_];
         self.buffer_ = nil;
+    }
+}
+
+#pragma mark - Private: Background
+
+- (void)beginBackgroundTaskIfNeeded_ {
+    if (self.runsInBackground) {
+        if ([[UIDevice currentDevice] isMultitaskingSupported]) {
+            if (self.backgroundTaskIdentifier_ == UIBackgroundTaskInvalid) 
+            {
+                UIApplication *app = [UIApplication sharedApplication];
+                self.backgroundTaskIdentifier_ = [app beginBackgroundTaskWithExpirationHandler:^
+                {
+                    [self endBackgroundTaskIfNeeded_];
+                }];
+            } // if UIBackgroundTaskInvalid
+        } // if isMultitaskingSupported
+    } // if runsInBackground
+}
+
+- (void)endBackgroundTaskIfNeeded_ {
+    if (self.backgroundTaskIdentifier_ != UIBackgroundTaskInvalid) {
+        UIApplication *app = [UIApplication sharedApplication];
+        [app endBackgroundTask:self.backgroundTaskIdentifier_];
+        self.backgroundTaskIdentifier_ = UIBackgroundTaskInvalid;
     }
 }
 

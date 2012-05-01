@@ -69,6 +69,7 @@ extern float const MUKURLConnectionUnknownQuota;
  @return A connection ready to be started.
  */
 - (id)initWithRequest:(NSURLRequest *)request;
+
 /** @name Properties */
 /**
  The URL request which will be performed invoking start.
@@ -80,7 +81,15 @@ extern float const MUKURLConnectionUnknownQuota;
  *Default value*: `YES`.
  */
 @property (nonatomic, assign) BOOL usesBuffer;
-
+/**
+ Connection runs when application is in background.
+ 
+ Default is `NO`.
+ 
+ When connection is started, a background task is begun. Background task is
+ ended when connection finishes or it is cancelled.
+ */
+@property (nonatomic, assign) BOOL runsInBackground;
 /**
  Number of bytes received by the connection.
  

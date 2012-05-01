@@ -40,6 +40,8 @@
 		065668531517A85B00DA53AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 065668411517A85A00DA53AA /* Foundation.framework */; };
 		065668561517A85B00DA53AA /* libMUKNetworking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0656683E1517A85A00DA53AA /* libMUKNetworking.a */; };
 		0656688F1517CA2A00DA53AA /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0656684F1517A85A00DA53AA /* SenTestingKit.framework */; };
+		066F8533154FCEE400704724 /* MUKURLConnection_Background.h in Headers */ = {isa = PBXBuildFile; fileRef = 066F8532154FCEE400704724 /* MUKURLConnection_Background.h */; };
+		066F8535154FCFC300704724 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 066F8534154FCFC300704724 /* UIKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +79,8 @@
 		0656684E1517A85A00DA53AA /* MUKNetworkingTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MUKNetworkingTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0656684F1517A85A00DA53AA /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		065668511517A85B00DA53AA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		066F8532154FCEE400704724 /* MUKURLConnection_Background.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKURLConnection_Background.h; sourceTree = "<group>"; };
+		066F8534154FCFC300704724 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0685099F1518EE4C00D450CA /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -85,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				066F8535154FCFC300704724 /* UIKit.framework in Frameworks */,
 				065668421517A85A00DA53AA /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -153,6 +158,7 @@
 		0616E5D11521AF7E00014231 /* URL Connection */ = {
 			isa = PBXGroup;
 			children = (
+				066F8530154FCED400704724 /* Private */,
 				0616E5D21521AF7E00014231 /* MUKURLConnection.h */,
 				0616E5D31521AF7E00014231 /* MUKURLConnection.m */,
 			);
@@ -225,11 +231,20 @@
 		065668401517A85A00DA53AA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				066F8534154FCFC300704724 /* UIKit.framework */,
 				065668411517A85A00DA53AA /* Foundation.framework */,
 				0656684F1517A85A00DA53AA /* SenTestingKit.framework */,
 				065668511517A85B00DA53AA /* UIKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		066F8530154FCED400704724 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				066F8532154FCEE400704724 /* MUKURLConnection_Background.h */,
+			);
+			path = Private;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -245,6 +260,7 @@
 				06004937154B1385004A3B17 /* MUKURLConnectionQueue.h in Headers */,
 				0600493D154B1408004A3B17 /* MUKURLConnectionOperation_.h in Headers */,
 				06004940154B1549004A3B17 /* MUKURLConnection_Queue.h in Headers */,
+				066F8533154FCEE400704724 /* MUKURLConnection_Background.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

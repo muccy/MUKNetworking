@@ -29,7 +29,7 @@
 /*
  Called before completionHandler
  */
-@property (nonatomic, copy) MUKURLConnectionCompletionHandler operationCompletionHandler_;
+@property (nonatomic, copy) void (^operationCompletionHandler_)(BOOL success, NSError *error);
 /*
  Called when -cancel is invoked
  */

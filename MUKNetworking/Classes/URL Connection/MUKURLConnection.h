@@ -58,14 +58,8 @@
  */
 
 #import <Foundation/Foundation.h>
-
-typedef void (^MUKURLConnectionCompletionHandler)(BOOL success, NSError *error);
-typedef void (^MUKURLConnectionProgressHandler)(NSData *chunk, float quota);
-typedef void (^MUKURLConnectionResponseHandler)(NSURLResponse *response);
-typedef NSURLRequest* (^MUKURLConnectionRedirectHandler)(NSURLRequest *request, NSURLResponse *redirectResponse);
              
 extern float const MUKURLConnectionUnknownQuota;
-
 
 @interface MUKURLConnection : NSObject
 /** @name Initializers */
@@ -108,17 +102,17 @@ extern float const MUKURLConnectionUnknownQuota;
 /**
  An handler called as connection receives a response.
  
- `MUKURLConnectionResponseHandler` block takes only one parameter, `response`, 
+ `responseHandler` block takes only one parameter, `response`, 
  which is the URL response for the connection's request.
  
  @see didReceiveResponse:
  */
-@property (nonatomic, copy) MUKURLConnectionResponseHandler responseHandler;
+@property (nonatomic, copy) void (^responseHandler)(NSURLResponse *response);
 /**
  An handler called as connection receives a redirection, before to send new 
  request.
  
- `MUKURLConnectionRedirectHandler` block takes two parameters
+ `redirectHandler` block takes two parameters:
  
  - `request`, the proposed redirected request.
  - `redirectResponse`, the URL response that caused the redirect.
@@ -128,11 +122,11 @@ extern float const MUKURLConnectionUnknownQuota;
  
  @see willSendRequest:redirectResponse:
  */
-@property (nonatomic, copy) MUKURLConnectionRedirectHandler redirectHandler;
+@property (nonatomic, copy) NSURLRequest* (^redirectHandler)(NSURLRequest *request, NSURLResponse *redirectResponse);
 /**
  An handler called as connection receives a chunk of data.
  
- `MUKURLConnectionProgressHandler` block takes two parameters
+ `progressHandler` block takes two parameters:
  
  - `chunk`, the newly available data.
  - `quota`, the progress expressed by a float from 0.0 to 1.0. It could be
@@ -140,11 +134,11 @@ extern float const MUKURLConnectionUnknownQuota;
  
  @see didReceiveData:
  */
-@property (nonatomic, copy) MUKURLConnectionProgressHandler progressHandler;
+@property (nonatomic, copy) void (^progressHandler)(NSData *chunk, float quota);
 /**
  An handler called as connection ends, both with success or with an error.
  
- `MUKURLConnectionCompletionHandler` block takes two parameters
+ `completionHandler` block takes two parameters:
  
  - `success`, which tells you if connection has terminated with success or not.
  - `error`, which could contain the error which caused the failure.
@@ -152,7 +146,7 @@ extern float const MUKURLConnectionUnknownQuota;
  @see didFailWithError:
  @see didFinishLoading
  */
-@property (nonatomic, copy) MUKURLConnectionCompletionHandler completionHandler;
+@property (nonatomic, copy) void (^completionHandler)(BOOL success, NSError *error);
 @end
 
 

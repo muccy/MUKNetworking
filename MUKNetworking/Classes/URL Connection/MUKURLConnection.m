@@ -256,16 +256,14 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 
 - (void)beginBackgroundTaskIfNeeded_ {
     if (self.runsInBackground) {
-        if ([[UIDevice currentDevice] isMultitaskingSupported]) {
-            if (self.backgroundTaskIdentifier_ == UIBackgroundTaskInvalid) 
+        if (self.backgroundTaskIdentifier_ == UIBackgroundTaskInvalid) 
+        {
+            UIApplication *app = [UIApplication sharedApplication];
+            self.backgroundTaskIdentifier_ = [app beginBackgroundTaskWithExpirationHandler:^
             {
-                UIApplication *app = [UIApplication sharedApplication];
-                self.backgroundTaskIdentifier_ = [app beginBackgroundTaskWithExpirationHandler:^
-                {
-                    [self endBackgroundTaskIfNeeded_];
-                }];
-            } // if UIBackgroundTaskInvalid
-        } // if isMultitaskingSupported
+                [self endBackgroundTaskIfNeeded_];
+            }];
+        } // if UIBackgroundTaskInvalid
     } // if runsInBackground
 }
 

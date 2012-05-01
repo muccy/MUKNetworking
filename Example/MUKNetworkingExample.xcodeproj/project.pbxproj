@@ -20,6 +20,7 @@
 		0605D8301519DCE8005F50A7 /* BufferedDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0605D82E1519DCE8005F50A7 /* BufferedDownloadViewController.m */; };
 		0605D8311519DCE8005F50A7 /* BufferedDownloadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0605D82F1519DCE8005F50A7 /* BufferedDownloadViewController.xib */; };
 		0616E6131521B1D300014231 /* libMUKNetworking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0616E60E1521B1B800014231 /* libMUKNetworking.a */; };
+		061774F115503005009154BC /* BackgroundBufferedDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 061774F015503005009154BC /* BackgroundBufferedDownloadViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,8 @@
 		0605D82E1519DCE8005F50A7 /* BufferedDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BufferedDownloadViewController.m; sourceTree = "<group>"; };
 		0605D82F1519DCE8005F50A7 /* BufferedDownloadViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BufferedDownloadViewController.xib; sourceTree = "<group>"; };
 		0616E6041521B1B700014231 /* MUKNetworking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MUKNetworking.xcodeproj; path = ../MUKNetworking.xcodeproj; sourceTree = "<group>"; };
+		061774EF15503005009154BC /* BackgroundBufferedDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundBufferedDownloadViewController.h; sourceTree = "<group>"; };
+		061774F015503005009154BC /* BackgroundBufferedDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundBufferedDownloadViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +159,7 @@
 			children = (
 				0605D8291519DCB8005F50A7 /* Example Base */,
 				0605D81D1519D57C005F50A7 /* Buffered Download */,
+				061774EE15502FEC009154BC /* Background Download */,
 				0605D81E1519D57C005F50A7 /* Root */,
 				0605D81F1519D57C005F50A7 /* URL Connection */,
 			);
@@ -207,6 +211,15 @@
 				0616E6101521B1B800014231 /* MUKNetworkingTests.octest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		061774EE15502FEC009154BC /* Background Download */ = {
+			isa = PBXGroup;
+			children = (
+				061774EF15503005009154BC /* BackgroundBufferedDownloadViewController.h */,
+				061774F015503005009154BC /* BackgroundBufferedDownloadViewController.m */,
+			);
+			path = "Background Download";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -302,6 +315,7 @@
 				0605D8271519DB80005F50A7 /* URLConnectionViewController.m in Sources */,
 				0605D82C1519DCC9005F50A7 /* ExampleBaseViewController.m in Sources */,
 				0605D8301519DCE8005F50A7 /* BufferedDownloadViewController.m in Sources */,
+				061774F115503005009154BC /* BackgroundBufferedDownloadViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

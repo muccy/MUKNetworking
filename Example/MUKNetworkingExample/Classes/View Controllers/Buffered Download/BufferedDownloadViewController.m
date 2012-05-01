@@ -48,6 +48,7 @@
 - (MUKURLConnection *)createConnection {
     NSURL *url = [NSURL URLWithString:@"http://4.bp.blogspot.com/-7CkVJATx8UA/To1Ve_U9UgI/AAAAAAAAAUk/uTQTKaFOvpY/s1600/steve-jobs-on-time.png"];
     MUKURLConnection *download = [[MUKURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:url]];
+    
     return download;
 }
 
@@ -63,7 +64,9 @@
     
     connection.progressHandler = ^(NSData *chunk, float quota) {
         weakSelf.progressView.progress = quota;
-        weakSelf.progressLabel.text = [NSString stringWithFormat:@"Received: %lld of %lld", connection.receivedBytesCount, connection.expectedBytesCount];
+        NSString *progressString = [[NSString alloc] initWithFormat:@"Received: %lld of %lld", connection.receivedBytesCount, connection.expectedBytesCount];
+        weakSelf.progressLabel.text = progressString;
+        NSLog(@"%@", progressString);
         chunksCount++;
     };
     

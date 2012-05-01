@@ -9,6 +9,7 @@
 #import "RootTableViewController.h"
 #import "URLConnectionViewController.h"
 #import "BufferedDownloadViewController.h"
+#import "BackgroundBufferedDownloadViewController.h"
 
 @interface RootTableViewControllerRowData_ : NSObject
 @property (nonatomic, strong) NSString *title, *subtitle;
@@ -60,17 +61,22 @@
     if (rowsData_ == nil) {
         __unsafe_unretained RootTableViewController *weakSelf = self;
         
-        RootTableViewControllerRowData_ *URLConnectionRow = [RootTableViewControllerRowData_ rowDataWithTitle:@"URL Connection" subtitle:@"MUKURLConnection, usesBuffer = NO" selectionHandler:^{
+        RootTableViewControllerRowData_ *URLConnectionRow = [RootTableViewControllerRowData_ rowDataWithTitle:@"URL Connection" subtitle:@"usesBuffer = NO" selectionHandler:^{
             URLConnectionViewController *viewController = [[URLConnectionViewController alloc] initWithNibName:nil bundle:nil];
             [weakSelf.navigationController pushViewController:viewController animated:YES];
         }];
         
-        RootTableViewControllerRowData_ *bufferedDownloadRow = [RootTableViewControllerRowData_ rowDataWithTitle:@"Buffered Download" subtitle:@"MUKURLConnection, usesBuffer = YES" selectionHandler:^{
+        RootTableViewControllerRowData_ *bufferedDownloadRow = [RootTableViewControllerRowData_ rowDataWithTitle:@"Buffered Download" subtitle:@"usesBuffer = YES" selectionHandler:^{
             BufferedDownloadViewController *viewController = [[BufferedDownloadViewController alloc] initWithNibName:nil bundle:nil];
             [weakSelf.navigationController pushViewController:viewController animated:YES];
         }];
         
-        rowsData_ = [[NSArray alloc] initWithObjects:URLConnectionRow, bufferedDownloadRow, nil];
+        RootTableViewControllerRowData_ *backgroundDownloadRow = [RootTableViewControllerRowData_ rowDataWithTitle:@"Background Download" subtitle:@"runsInBackground = YES" selectionHandler:^{
+            BackgroundBufferedDownloadViewController *viewController = [[BackgroundBufferedDownloadViewController alloc] initWithNibName:@"BufferedDownloadViewController" bundle:nil];
+            [weakSelf.navigationController pushViewController:viewController animated:YES];
+        }];
+        
+        rowsData_ = [[NSArray alloc] initWithObjects:URLConnectionRow, bufferedDownloadRow, backgroundDownloadRow, nil];
     }
     
     return rowsData_;

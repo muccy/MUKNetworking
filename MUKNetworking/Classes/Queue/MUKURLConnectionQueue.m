@@ -25,6 +25,7 @@
 
 #import "MUKURLConnectionQueue.h"
 #import "MUKURLConnectionOperation_.h"
+#import "MUKURLConnectionQueue_Background.h"
 
 NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections = NSOperationQueueDefaultMaxConcurrentOperationCount;
 
@@ -39,10 +40,6 @@ NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections = NSOperati
 @synthesize connectionDidFinishHandler = connectionDidFinishHandler_;
 @synthesize queue_ = queue__;
 
-- (void)dealloc {
-    [queue__ cancelAllOperations];
-}
-
 #pragma mark - Methods
 
 - (BOOL)addConnection:(MUKURLConnection *)connection {
@@ -50,6 +47,14 @@ NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections = NSOperati
     
     BOOL inserted;
     @try {
+        /*
+         If connection should run in background, make operation to run in 
+         background too.
+         */
+        [self beginBackgroundTaskIfNeededInOperation_:op];
+        /*
+         Add operation
+         */
         [self.queue_ addOperation:op];
         inserted = YES;
     }
@@ -65,6 +70,12 @@ NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections = NSOperati
     [connections enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) 
     {
         MUKURLConnectionOperation_ *op = [self newOperationFromConnection_:obj];
+        /*
+         If connection should run in background, make operation to run in 
+         background too.
+         */
+        [self beginBackgroundTaskIfNeededInOperation_:op];
+        
         [operations addObject:op];
     }];
     
@@ -96,8 +107,25 @@ NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections = NSOperati
     {
         if ([obj isKindOfClass:[MUKURLConnectionOperation_ class]]) {
             [(MUKURLConnectionOperation_ *)obj cancel];
+            
+            // Operation background task is ended in operation's completion block
         }
     }];
+}
+
+#pragma mark - Callbacks
+
+- (void)willStartConnection:(MUKURLConnection *)connection {
+    if (self.connectionWillStartHandler) {
+        self.connectionWillStartHandler(connection);
+    }
+}
+
+- (void)didFinishConnection:(MUKURLConnection *)connection cancelled:(BOOL)cancelled
+{
+    if (self.connectionDidFinishHandler) {
+        self.connectionDidFinishHandler(connection, cancelled);
+    }
 }
 
 #pragma mark - Accessors
@@ -141,30 +169,53 @@ NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections = NSOperati
 - (MUKURLConnectionOperation_ *)newOperationFromConnection_:(MUKURLConnection *)connection
 {
     MUKURLConnectionOperation_ *op = [[MUKURLConnectionOperation_ alloc] initWithConnection:connection];
-    __unsafe_unretained MUKURLConnectionOperation_ *weakOp = op;
-    __unsafe_unretained MUKURLConnectionQueue *weakSelf = self;
-        
+    MUKURLConnectionOperation_ *strongOp = op;
+    
+    /*
+     Keeping strong pointers to operation and to queue make sure every handler
+     is called once and queue is kept alive.
+     When last operation is dismissed, queue will be dealloc'd
+     */
     op.connectionWillStartHandler = ^{
-        if (weakSelf.connectionWillStartHandler) {
-            weakSelf.connectionWillStartHandler(weakOp.connection);
-        }
+        [self willStartConnection:strongOp.connection];
+        
+        // Break cycle
+        strongOp.connectionWillStartHandler = nil;
     };
     
     op.completionBlock = ^{
-        if (weakSelf.connectionDidFinishHandler) {
-            // Capture variables strongly
-            BOOL cancelled = [weakOp isCancelled];
-            MUKURLConnection *conn = weakOp.connection;
-            void (^handler)(MUKURLConnection *, BOOL) = weakSelf.connectionDidFinishHandler;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self didFinishConnection:strongOp.connection cancelled:[strongOp isCancelled]];
+            [self endBackgroundTaskIfNeededInOperation_:strongOp];
             
-            // Dispatch on main queue with captured variables
-            dispatch_async(dispatch_get_main_queue(), ^{
-                handler(conn, cancelled);
-            });
-        }
+            // Break cycle
+            strongOp.completionBlock = nil;
+        });
     };
     
     return op;
+}
+
+#pragma mark - Private: Background
+
+- (void)beginBackgroundTaskIfNeededInOperation_:(MUKURLConnectionOperation_ *)op
+{
+    if (op.connection.runsInBackground) {
+        if (op.backgroundTaskIdentifier == UIBackgroundTaskInvalid) {
+            op.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^
+            {
+                [self endBackgroundTaskIfNeededInOperation_:op];
+            }];
+        }
+    }
+}
+
+- (void)endBackgroundTaskIfNeededInOperation_:(MUKURLConnectionOperation_ *)op {
+    if (op.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+        UIBackgroundTaskIdentifier tid = op.backgroundTaskIdentifier;
+        op.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+        [[UIApplication sharedApplication] endBackgroundTask:tid];
+    }
 }
 
 @end

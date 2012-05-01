@@ -37,14 +37,21 @@
 @property (nonatomic) dispatch_queue_t currentQueue_;
 
 - (void)setupHandlers_;
+- (BOOL)checkCancellationInMainMethod_;
 @end
 
 @implementation MUKURLConnectionOperation_
 @synthesize connection = connection_;
 @synthesize connectionWillStartHandler = connectionWillStartHandler_;
+@synthesize backgroundTaskIdentifier = backgroundTaskIdentifier_;
 
 @synthesize connectionFinished_ = connectionFinished__, connectionCancelled_ = connectionCancelled__, mainCalled_ = mainCalled__;
 @synthesize currentQueue_ = currentQueue__;
+
+- (id)init {
+    self = [self initWithConnection:nil];
+    return self;
+}
 
 - (id)initWithConnection:(MUKURLConnection *)connection {
     self = [super init];
@@ -54,6 +61,7 @@
 #endif
         self.connection = connection;
         self.currentQueue_ = dispatch_get_current_queue();
+        self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
         [self setupHandlers_];
     }
     return self;
@@ -78,27 +86,25 @@
 #endif
     self.mainCalled_ = YES;
     self.currentQueue_ = dispatch_get_current_queue();
-    
-    if (self.connectionCancelled_) {
-#if DEBUG_LOG
-        NSLog(@"Connection operation cancelled in main (%@)", self.connection);
-#endif
-        [self cancel];
-        return;
-    }
  
-    if (![self isCancelled]) {
+    if (![self checkCancellationInMainMethod_]) {
         // Start connection
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (self.connectionWillStartHandler) {
-                self.connectionWillStartHandler();
-            }
-            
-            // Schedule connection on main run loop
+            if (![self checkCancellationInMainMethod_]) {
+                if (self.connectionWillStartHandler) {
+                    if (![self checkCancellationInMainMethod_]) {
+                        self.connectionWillStartHandler();
+                    }
+                } // if handler
+                
+                // Schedule connection on main run loop
 #if DEBUG_LOG
-            NSLog(@"Connection operation started (%@)", self.connection);
+                NSLog(@"Connection operation started (%@)", self.connection);
 #endif
-            [self.connection start];
+                if (![self checkCancellationInMainMethod_]) {
+                    [self.connection start];
+                }
+            }
         });
     }
 }
@@ -162,6 +168,20 @@
             strongSelf.connectionFinished_ = YES;
         });
     };
+}
+
+- (BOOL)checkCancellationInMainMethod_ {
+    if ([self isCancelled]) return YES;
+    
+    if (self.connectionCancelled_) {
+#if DEBUG_LOG
+        NSLog(@"Connection operation cancelled in main method (%@)", self.connection);
+#endif
+        [self cancel];
+        return YES;
+    }
+    
+    return NO;
 }
 
 @end

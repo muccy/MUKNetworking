@@ -26,12 +26,37 @@
 #import "MUKURLConnectionQueueTests.h"
 #import "MUKURLConnectionQueue.h"
 
+@interface MockQueue_ : MUKURLConnectionQueue
+@property (nonatomic) BOOL *objectDealloced;
+@property (nonatomic) NSInteger *didFinishConnectionCallsCount;
+@end
+
+@implementation MockQueue_
+@synthesize objectDealloced;
+@synthesize didFinishConnectionCallsCount;
+
+- (void)dealloc {
+    *(self.objectDealloced) = YES;
+}
+
+- (void)didFinishConnection:(MUKURLConnection *)connection cancelled:(BOOL)cancelled
+{
+    [super didFinishConnection:connection cancelled:cancelled];
+    (*(self.didFinishConnectionCallsCount))++;
+}
+
+@end
+
+#pragma mark - 
+#pragma mark - 
+
 @implementation MUKURLConnectionQueueTests
 
 - (void)testEnqueueing {
     // Setup connection
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.apple.com"]];
     MUKURLConnection *connection1 = [[MUKURLConnection alloc] initWithRequest:request];
+    connection1.runsInBackground = YES;
     MUKURLConnection *connection2 = [[MUKURLConnection alloc] initWithRequest:request];
     NSInteger const kConnectionsCount = 2;
     
@@ -116,6 +141,7 @@
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.apple.com"]];
     MUKURLConnection *connection1 = [[MUKURLConnection alloc] initWithRequest:request];
     MUKURLConnection *connection2 = [[MUKURLConnection alloc] initWithRequest:request];
+    connection2.runsInBackground = YES;
     NSArray *connections = [[NSArray alloc] initWithObjects:connection1, connection2, nil];
     NSInteger const kConnectionsCount = 2;
     
@@ -199,6 +225,7 @@
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.apple.com"]];
     MUKURLConnection *connection1 = [[MUKURLConnection alloc] initWithRequest:request];
     MUKURLConnection *connection2 = [[MUKURLConnection alloc] initWithRequest:request];
+    connection2.runsInBackground = YES;
     MUKURLConnection *cancelledConnection = connection2;
     NSArray *connections = [[NSArray alloc] initWithObjects:connection1, connection2, nil];
     NSInteger const kConnectionsCount = 2;
@@ -260,6 +287,7 @@
     // Setup connection
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.apple.com"]];
     MUKURLConnection *connection1 = [[MUKURLConnection alloc] initWithRequest:request];
+    connection1.runsInBackground = YES;
     MUKURLConnection *connection2 = [[MUKURLConnection alloc] initWithRequest:request];
     NSArray *connections = [[NSArray alloc] initWithObjects:connection1, connection2, nil];
     NSInteger const kConnectionsCount = 2;
@@ -307,6 +335,62 @@
     [self unregisterTestURLProtocol];
     queue.connectionWillStartHandler = nil;
     queue.connectionDidFinishHandler = nil;
+}
+
+- (void)testQueueDeallocation {
+    // Setup connection
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.apple.com"]];
+    MUKURLConnection *connection1 = [[MUKURLConnection alloc] initWithRequest:request];
+    connection1.runsInBackground = YES;
+    MUKURLConnection *connection2 = [[MUKURLConnection alloc] initWithRequest:request];
+    NSArray *connections = [[NSArray alloc] initWithObjects:connection1, connection2, nil];
+    NSInteger const kConnectionsCount = 2;
+    
+    // Setup chunks
+    NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSArray *chunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
+    
+    [self registerTestURLProtocol];
+    [MUKTestURLProtocol setChunksToProduce:chunks];
+    
+    // Create a queue
+    MockQueue_ *queue = [[MockQueue_ alloc] init];
+    queue.maximumConcurrentConnections = 1;
+    queue.name = @"it.melive.mukit.mukknetworking.tests";
+    
+    NSInteger didFinishCount = 0;
+    queue.didFinishConnectionCallsCount = &didFinishCount;
+    
+    BOOL queueDealloced = NO;
+    queue.objectDealloced = &queueDealloced;
+    
+    queue.connectionWillStartHandler = ^(MUKURLConnection *conn) {
+        //
+    };
+    
+    queue.connectionDidFinishHandler = ^(MUKURLConnection *conn, BOOL cancelled)
+    {        
+        //
+    };
+    
+    // Add connections
+    queue.suspended = YES;
+    [queue addConnections:connections];
+    
+    // Lose strong pointer to queue
+    queue.suspended = NO;
+    queue.connectionWillStartHandler = nil;
+    queue.connectionDidFinishHandler = nil;
+    queue = nil;
+    
+    // Wait for timeout
+    [self waitForCompletion:&queueDealloced timeout:10.0];
+
+    STAssertEquals(kConnectionsCount, didFinishCount, @"%i connections dequeued", didFinishCount);
+    STAssertTrue(queueDealloced, @"Queue deallocated");
+    
+    [self unregisterTestURLProtocol];
 }
 
 @end

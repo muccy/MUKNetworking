@@ -35,6 +35,7 @@
 		0616E5EE1521AF8900014231 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0616E5E31521AF8900014231 /* InfoPlist.strings */; };
 		0616E5F01521AF8900014231 /* MUKTestURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 0616E5E81521AF8900014231 /* MUKTestURLProtocol.m */; };
 		0616E5F11521AF8900014231 /* MUKURLConnectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0616E5EB1521AF8900014231 /* MUKURLConnectionTests.m */; };
+		061774F31550356F009154BC /* MUKURLConnectionQueue_Background.h in Headers */ = {isa = PBXBuildFile; fileRef = 061774F21550356F009154BC /* MUKURLConnectionQueue_Background.h */; };
 		065668421517A85A00DA53AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 065668411517A85A00DA53AA /* Foundation.framework */; };
 		065668521517A85B00DA53AA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 065668511517A85B00DA53AA /* UIKit.framework */; };
 		065668531517A85B00DA53AA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 065668411517A85A00DA53AA /* Foundation.framework */; };
@@ -74,6 +75,7 @@
 		0616E5E81521AF8900014231 /* MUKTestURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKTestURLProtocol.m; sourceTree = "<group>"; };
 		0616E5EA1521AF8900014231 /* MUKURLConnectionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKURLConnectionTests.h; sourceTree = "<group>"; };
 		0616E5EB1521AF8900014231 /* MUKURLConnectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKURLConnectionTests.m; sourceTree = "<group>"; };
+		061774F21550356F009154BC /* MUKURLConnectionQueue_Background.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKURLConnectionQueue_Background.h; sourceTree = "<group>"; };
 		0656683E1517A85A00DA53AA /* libMUKNetworking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMUKNetworking.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		065668411517A85A00DA53AA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0656684E1517A85A00DA53AA /* MUKNetworkingTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MUKNetworkingTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -123,6 +125,7 @@
 			children = (
 				0600493A154B13ED004A3B17 /* Operation */,
 				0600493F154B1549004A3B17 /* MUKURLConnection_Queue.h */,
+				061774F21550356F009154BC /* MUKURLConnectionQueue_Background.h */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 				0600493D154B1408004A3B17 /* MUKURLConnectionOperation_.h in Headers */,
 				06004940154B1549004A3B17 /* MUKURLConnection_Queue.h in Headers */,
 				066F8533154FCEE400704724 /* MUKURLConnection_Background.h in Headers */,
+				061774F31550356F009154BC /* MUKURLConnectionQueue_Background.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

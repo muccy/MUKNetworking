@@ -35,8 +35,14 @@ extern NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections;
  start 20 connections together. You could feed you connections into
  a queue and use handlers like you usually do.
  
+ Queue enforces [MUKURLConnection runsInBackground] choice by starting another
+ background task before to add connection and ending that background task after
+ connectionDidFinishHandler is invoked.
+ 
  @warning If you call [MUKURLConnection cancel], connection will be cancelled
  also from queue execution.
+ @warning When queue is not deallocated until every connection finishes or it
+ is cancelled.
  */
 @interface MUKURLConnectionQueue : NSObject
 /** @name Properties */
@@ -75,21 +81,15 @@ extern NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections;
 
 /** @name Handlers */
 /**
- Handler called (in main queue) as connection is about to be started 
- by the queue.
+ Handler called (on main queue) as connection is about to be started.
  
- When handler returns, [MUKURLConnection start] is called on
- `connection` object.
+ @see willStartConnection:
  */
 @property (nonatomic, copy) void (^connectionWillStartHandler)(MUKURLConnection *connection);
 /**
- Handler called (in main queue) as connection has been removed from queue.
+ Handler called (on main queue) as connection has been removed from queue.
  
- `cancelled` is `YES` if connection has been removed from queue after cancellation.
- 
- @warning Connection buffer could be already empy when this handler is called.
- Please keep using [MUKURLConnection completionHandler]. This handler is useful
- to observe queue status.
+ @see didFinishConnection:cancelled:
  */
 @property (nonatomic, copy) void (^connectionDidFinishHandler)(MUKURLConnection *connection, BOOL cancelled);
 
@@ -99,6 +99,9 @@ extern NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections;
  
  Once added, the specified connection remains in the queue until
  it finishes executing.
+ 
+ If [MUKURLConnection runsInBackground] is `YES`, a background task is started
+ in order to call connectionDidFinishHandler before app is suspended.
  
  @param connection Connection which will be enqueued.
  @return `YES` if connection can be inserted. Mind that a connection
@@ -112,6 +115,9 @@ extern NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections;
  
  Once added, the specified connections remain in the queue until
  they finish executing.
+ 
+ If some [MUKURLConnection runsInBackground] are `YES`, a background tasks are
+ started in order to call connectionDidFinishHandler before app is suspended.
  
  @param connections The array of MUKURLConnection instances.
  @return `YES` if connections can be inserted. Mind that a connection
@@ -130,7 +136,42 @@ extern NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections;
  Cancels all queued and executing connections.
  
  This method sends a cancel message to all connections currently in the queue.
+ 
+ @warning didFinishConnection:cancelled: is not called synchronously in this method,
+ but in the moment connection is put outside the queue.
  */
 - (void)cancelAllConnections;
+@end
 
+
+@interface MUKURLConnectionQueue (Callbacks)
+/**
+ Callback called (on main dispatch queue) as connection is about to be started 
+ by the connection queue.
+ 
+ When callback returns, [MUKURLConnection start] is called on connection object.
+ 
+ Default implementation calls connectionWillStartHandler.
+ 
+ @param connection The connection which will be started.
+ */
+- (void)willStartConnection:(MUKURLConnection *)connection;
+/**
+ Callback called (on main dispatch queue) as connection has been removed from queue.
+ 
+ `cancelled` is `YES` if connection has been removed from queue after cancellation.
+ 
+ Execution is guaranteed in background, because task is ended after callback
+ returns.
+ 
+ Default implementation calls connectionDidFinishHandler.
+ 
+ @param connection The connection which has been removed from queue.
+ @param cancelled `YES` if connection has been removed from queue because of
+ a cancellation.
+ @warning Connection buffer could be already empty when this handler is called.
+ Please keep using [MUKURLConnection completionHandler]. This callback is useful
+ to observe queue status.
+ */
+- (void)didFinishConnection:(MUKURLConnection *)connection cancelled:(BOOL)cancelled;
 @end

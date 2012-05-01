@@ -25,11 +25,17 @@
 
 #import <Foundation/Foundation.h>
 #import <MUKNetworking/MUKURLConnection.h>
+#import <UIKit/UIKit.h>
 
 @interface MUKURLConnectionOperation_ : NSOperation
-- (id)initWithConnection:(MUKURLConnection *)connection;
 @property (nonatomic, strong, readonly) MUKURLConnection *connection;
+
+// Set/unset by queue
+@property (nonatomic) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
 
 // Called on main queue
 @property (nonatomic, copy) void (^connectionWillStartHandler)(void);
+
+- (id)initWithConnection:(MUKURLConnection *)connection;
+
 @end

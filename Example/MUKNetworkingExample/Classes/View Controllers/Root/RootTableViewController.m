@@ -10,6 +10,7 @@
 #import "URLConnectionViewController.h"
 #import "BufferedDownloadViewController.h"
 #import "BackgroundBufferedDownloadViewController.h"
+#import "QueueViewController.h"
 
 @interface RootTableViewControllerRowData_ : NSObject
 @property (nonatomic, strong) NSString *title, *subtitle;
@@ -76,7 +77,12 @@
             [weakSelf.navigationController pushViewController:viewController animated:YES];
         }];
         
-        rowsData_ = [[NSArray alloc] initWithObjects:URLConnectionRow, bufferedDownloadRow, backgroundDownloadRow, nil];
+        RootTableViewControllerRowData_ *queueRow = [RootTableViewControllerRowData_ rowDataWithTitle:@"Queue" subtitle:@"MUKURLConnectionQueue" selectionHandler:^{
+            QueueViewController *viewController = [[QueueViewController alloc] initWithNibName:nil bundle:nil];
+            [weakSelf.navigationController pushViewController:viewController animated:YES];
+        }];
+        
+        rowsData_ = [[NSArray alloc] initWithObjects:URLConnectionRow, bufferedDownloadRow, backgroundDownloadRow, queueRow, nil];
     }
     
     return rowsData_;

@@ -106,6 +106,10 @@ extern float const MUKURLConnectionUnknownQuota;
  is estabilished.
  */
 @property (nonatomic, assign, readonly) long long expectedBytesCount;
+/**
+ Custom object you could attach to connection.
+ */
+@property (nonatomic, strong) id userInfo;
 
 /** @name Handlers */
 /**

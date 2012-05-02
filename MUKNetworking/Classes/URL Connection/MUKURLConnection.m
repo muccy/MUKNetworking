@@ -47,6 +47,7 @@ float const MUKURLConnectionUnknownQuota = -1.0f;
 @synthesize usesBuffer = usesBuffer_;
 @synthesize runsInBackground = runsInBackground_;
 @synthesize receivedBytesCount = receivedBytesCount_, expectedBytesCount = expectedBytesCount_;
+@synthesize userInfo = userInfo_;
 @synthesize completionHandler = completionHandler_;
 @synthesize responseHandler = responseHandler_;
 @synthesize progressHandler = progressHandler_;

@@ -111,6 +111,8 @@
 
 - (void)cancel {    
     // Cancel connection
+    // Set operationCancelHandler_ to nil to prevent recursion
+    self.connection.operationCancelHandler_ = nil;
     [self.connection cancel];
     
     /*

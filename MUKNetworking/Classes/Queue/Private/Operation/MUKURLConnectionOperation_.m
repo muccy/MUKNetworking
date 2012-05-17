@@ -30,14 +30,12 @@
 
 @interface MUKURLConnectionOperation_ ()
 @property (nonatomic, strong, readwrite) MUKURLConnection *connection;
-@property (nonatomic) BOOL connectionFinished_, connectionCancelled_, mainCalled_;
 
-// Pay attention that currentQueue_ could be main queue before -main
-// is called (so don't use dispatch_sync)
-@property (nonatomic) dispatch_queue_t currentQueue_;
+// Don't produce KVO
+@property (atomic) BOOL isExecuting_, isFinished_, isCancelled_;
 
 - (void)setupHandlers_;
-- (BOOL)checkCancellationInMainMethod_;
+- (void)finish_;
 @end
 
 @implementation MUKURLConnectionOperation_
@@ -45,8 +43,8 @@
 @synthesize connectionWillStartHandler = connectionWillStartHandler_;
 @synthesize backgroundTaskIdentifier = backgroundTaskIdentifier_;
 
-@synthesize connectionFinished_ = connectionFinished__, connectionCancelled_ = connectionCancelled__, mainCalled_ = mainCalled__;
-@synthesize currentQueue_ = currentQueue__;
+@synthesize isExecuting_ = isExecuting__, isFinished_ = isFinished__;
+@synthesize isCancelled_ = isCancelled__;
 
 - (id)init {
     self = [self initWithConnection:nil];
@@ -60,8 +58,8 @@
         NSLog(@"Connection operation init (%@)", connection);
 #endif
         self.connection = connection;
-        self.currentQueue_ = dispatch_get_current_queue();
         self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+        
         [self setupHandlers_];
     }
     return self;
@@ -80,33 +78,41 @@
 
 #pragma mark - Overrides
 
-- (void)main {  
-#if DEBUG_LOG
-    NSLog(@"Connection operation main (%@)", self.connection);
-#endif
-    self.mainCalled_ = YES;
-    self.currentQueue_ = dispatch_get_current_queue();
- 
-    if (![self checkCancellationInMainMethod_]) {
-        // Start connection
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (![self checkCancellationInMainMethod_]) {
-                if (self.connectionWillStartHandler) {
-                    if (![self checkCancellationInMainMethod_]) {
-                        self.connectionWillStartHandler();
-                    }
-                } // if handler
-                
-                // Schedule connection on main run loop
-#if DEBUG_LOG
-                NSLog(@"Connection operation started (%@)", self.connection);
-#endif
-                if (![self checkCancellationInMainMethod_]) {
-                    [self.connection start];
-                }
-            }
-        });
+- (void)start {
+    // Ensure start in called on main thread
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(start) withObject:self waitUntilDone:NO];
+        return;
     }
+        
+    // Always check for cancellation
+    if ([self isCancelled]) {
+        [self willChangeValueForKey:@"isFinished"];
+        self.isFinished_ = YES;
+        [self didChangeValueForKey:@"isFinished"];
+        return;
+    }
+    
+    // Operation is not cancelled
+    [self willChangeValueForKey:@"isExecuting"];
+    self.isExecuting_ = YES;
+    [self didChangeValueForKey:@"isExecuting"];
+    
+    // Start connection
+    if (self.connectionWillStartHandler) {
+        self.connectionWillStartHandler();
+    }
+    
+    // Don't start connection if user cancelled it
+    if ([self isCancelled]) {
+        [self willChangeValueForKey:@"isFinished"];
+        self.isFinished_ = YES;
+        [self didChangeValueForKey:@"isFinished"];
+        return;
+    }
+    
+    // Start connection
+    [self.connection start];
 }
 
 - (void)cancel {    
@@ -115,31 +121,21 @@
     self.connection.operationCancelHandler_ = nil;
     [self.connection cancel];
     
-    /*
-     Mark operation as finished (without KVO because signal to queue
-     arrives from [super cancel])
-     */
-    connectionFinished__ = YES;
-    
-    [super cancel];
+    [self willChangeValueForKey:@"isCancelled"];
+    self.isCancelled_ = YES;
+    [self didChangeValueForKey:@"isCancelled"];
 }
 
 - (BOOL)isFinished {
-    return self.connectionFinished_;
+    return self.isFinished_;
 }
 
-#pragma mark - Accessors
+- (BOOL)isCancelled {
+    return self.isCancelled_;
+}
 
-- (void)setConnectionFinished_:(BOOL)connectionFinished_ {
-    if (connectionFinished_ != connectionFinished__) {
-        [self willChangeValueForKey:@"isFinished"];
-        connectionFinished__ = connectionFinished_;
-        [self didChangeValueForKey:@"isFinished"];
-        
-#if DEBUG_LOG
-        NSLog(@"Connection operation finished flag changed to %i (%@)", connectionFinished_, self.connection);
-#endif
-    }
+- (BOOL)isExecuting {
+    return self.isExecuting_;
 }
 
 #pragma mark - Private
@@ -149,41 +145,25 @@
     
     self.connection.operationCancelHandler_ = ^{
         // Called in main queue
-        MUKURLConnectionOperation_ *strongSelf = weakSelf;
-        
-        // Cancel operation in current queue
-        dispatch_async(strongSelf.currentQueue_, ^{
-            strongSelf.connectionCancelled_ = YES;
-            
-            if (strongSelf.mainCalled_) {
-                [strongSelf cancel];
-            }
-        });
+        [weakSelf cancel];
     };
     
-    self.connection.operationCompletionHandler_ = ^(BOOL success, NSError *error) {
+    self.connection.operationCompletionHandler_ = ^(BOOL success, NSError *error) 
+    {
         // Called in main queue
-        MUKURLConnectionOperation_ *strongSelf = weakSelf;
-        
-        // Set connectionFinished_ in current queue
-        dispatch_async(strongSelf.currentQueue_, ^{
-            strongSelf.connectionFinished_ = YES;
-        });
+        [weakSelf finish_];
     };
 }
 
-- (BOOL)checkCancellationInMainMethod_ {
-    if ([self isCancelled]) return YES;
+- (void)finish_ {
+    [self willChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:@"isFinished"];
     
-    if (self.connectionCancelled_) {
-#if DEBUG_LOG
-        NSLog(@"Connection operation cancelled in main method (%@)", self.connection);
-#endif
-        [self cancel];
-        return YES;
-    }
+    self.isExecuting_ = NO;
+    self.isFinished_ = YES;
     
-    return NO;
+    [self didChangeValueForKey:@"isExecuting"];
+    [self didChangeValueForKey:@"isFinished"];
 }
 
 @end

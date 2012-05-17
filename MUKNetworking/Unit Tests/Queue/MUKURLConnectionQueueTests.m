@@ -26,6 +26,8 @@
 #import "MUKURLConnectionQueueTests.h"
 #import "MUKURLConnectionQueue.h"
 
+#define kTimeout    2.0
+
 @interface MockQueue_ : MUKURLConnectionQueue
 @property (nonatomic) BOOL *objectDealloced;
 @property (nonatomic) NSInteger *didFinishConnectionCallsCount;
@@ -116,13 +118,13 @@
     [queue addConnection:connection1];
     [queue addConnection:connection2];
     
-    BOOL done1 = [self waitForCompletion:&completion1TestsDone timeout:2.0];
-    BOOL done2 = [self waitForCompletion:&completion2TestsDone timeout:2.0];
+    BOOL done1 = [self waitForCompletion:&completion1TestsDone timeout:kTimeout];
+    BOOL done2 = [self waitForCompletion:&completion2TestsDone timeout:kTimeout];
     if (!done1 || !done2) STFail(@"Timeout");
     
     STAssertTrue([completion2Date compare:completion1Date] == NSOrderedDescending, nil);
     
-    BOOL done3 = [self waitForCompletion:&allConnectionsStopped timeout:2.0];
+    BOOL done3 = [self waitForCompletion:&allConnectionsStopped timeout:kTimeout];
     if (!done3) STFail(@"Timeout");
     
     STAssertEquals((NSUInteger)0, [[queue connections] count], @"No more connections enqueued");
@@ -200,13 +202,13 @@
     // Add connections
     [queue addConnections:connections];
     
-    BOOL done1 = [self waitForCompletion:&completion1TestsDone timeout:2.0];
-    BOOL done2 = [self waitForCompletion:&completion2TestsDone timeout:2.0];
+    BOOL done1 = [self waitForCompletion:&completion1TestsDone timeout:kTimeout];
+    BOOL done2 = [self waitForCompletion:&completion2TestsDone timeout:kTimeout];
     if (!done1 || !done2) STFail(@"Timeout");
     
     STAssertTrue([completion2Date compare:completion1Date] == NSOrderedDescending, nil);
     
-    BOOL done3 = [self waitForCompletion:&allConnectionsStopped timeout:2.0];
+    BOOL done3 = [self waitForCompletion:&allConnectionsStopped timeout:kTimeout];
     if (!done3) STFail(@"Timeout");
     
     STAssertEquals((NSUInteger)0, [[queue connections] count], @"No more connections enqueued");
@@ -270,7 +272,7 @@
     [cancelledConnection cancel];
     queue.suspended = NO;
     
-    BOOL done = [self waitForCompletion:&allConnectionsStopped timeout:2.0];
+    BOOL done = [self waitForCompletion:&allConnectionsStopped timeout:kTimeout];
     if (!done) STFail(@"Timeout");
     
     STAssertEquals((NSUInteger)0, [[queue connections] count], @"No more connections enqueued");
@@ -325,7 +327,7 @@
     [queue cancelAllConnections];
     queue.suspended = NO;
     
-    BOOL done = [self waitForCompletion:&allConnectionsStopped timeout:2.0];
+    BOOL done = [self waitForCompletion:&allConnectionsStopped timeout:kTimeout];
     if (!done) STFail(@"Timeout");
     
     STAssertEquals((NSUInteger)0, [[queue connections] count], @"No more connections enqueued");
@@ -385,7 +387,7 @@
     queue = nil;
     
     // Wait for timeout
-    [self waitForCompletion:&queueDealloced timeout:10.0];
+    [self waitForCompletion:&queueDealloced timeout:kTimeout*5.0];
 
     STAssertEquals(kConnectionsCount, didFinishCount, @"%i connections dequeued", didFinishCount);
     STAssertTrue(queueDealloced, @"Queue deallocated");

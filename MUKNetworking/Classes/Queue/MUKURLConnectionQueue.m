@@ -95,7 +95,8 @@ NSInteger const MUKURLConnectionQueueDefaultMaxConcurrentConnections = NSOperati
     NSMutableArray *connectionOperations = [NSMutableArray array];
     [[self.queue_ operations] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if ([obj isKindOfClass:[MUKURLConnectionOperation_ class]]) {
-            [connectionOperations addObject:obj];
+            MUKURLConnectionOperation_ *op = obj;
+            [connectionOperations addObject:op.connection];
         }
     }];
     

@@ -395,4 +395,28 @@
     [self unregisterTestURLProtocol];
 }
 
+- (void)testConnectionsList {
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.apple.com"]];
+    
+    NSArray *connections = [[NSArray alloc] initWithObjects:
+                            [[MUKURLConnection alloc] initWithRequest:request],
+                            [[MUKURLConnection alloc] initWithRequest:request],
+                            nil];
+    
+    MUKURLConnectionQueue *queue = [[MUKURLConnectionQueue alloc] init];
+    queue.suspended = YES;
+    
+    [queue addConnections:connections];
+    
+    __block NSUInteger count = 0;
+    [[queue connections] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) 
+    {
+        MUKURLConnection *expectedConnection = [connections objectAtIndex:idx];
+        STAssertEqualObjects(expectedConnection, obj, nil);
+        count++;
+    }];
+    
+    STAssertEquals(count, [connections count], nil);
+}
+
 @end

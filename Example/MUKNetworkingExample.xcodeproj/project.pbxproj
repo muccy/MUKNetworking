@@ -23,6 +23,7 @@
 		060B1A4815505E9800454D72 /* QueueViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 060B1A4615505E9800454D72 /* QueueViewController.xib */; };
 		0616E6131521B1D300014231 /* libMUKNetworking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0616E60E1521B1B800014231 /* libMUKNetworking.a */; };
 		061774F115503005009154BC /* BackgroundBufferedDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 061774F015503005009154BC /* BackgroundBufferedDownloadViewController.m */; };
+		06591137161B16D1002E5D03 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 06591136161B16D1002E5D03 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,7 @@
 		0616E6041521B1B700014231 /* MUKNetworking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MUKNetworking.xcodeproj; path = ../MUKNetworking.xcodeproj; sourceTree = "<group>"; };
 		061774EF15503005009154BC /* BackgroundBufferedDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundBufferedDownloadViewController.h; sourceTree = "<group>"; };
 		061774F015503005009154BC /* BackgroundBufferedDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundBufferedDownloadViewController.m; sourceTree = "<group>"; };
+		06591136161B16D1002E5D03 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 		0605D7F01519D345005F50A7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				06591136161B16D1002E5D03 /* Default-568h@2x.png */,
 				0605D7F11519D345005F50A7 /* MUKNetworkingExample-Info.plist */,
 				0605D7F21519D345005F50A7 /* InfoPlist.strings */,
 				0605D7F51519D345005F50A7 /* main.m */,
@@ -316,6 +319,7 @@
 				0605D8281519DB80005F50A7 /* URLConnectionViewController.xib in Resources */,
 				0605D8311519DCE8005F50A7 /* BufferedDownloadViewController.xib in Resources */,
 				060B1A4815505E9800454D72 /* QueueViewController.xib in Resources */,
+				06591137161B16D1002E5D03 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

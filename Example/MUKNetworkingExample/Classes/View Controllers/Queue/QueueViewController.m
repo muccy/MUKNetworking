@@ -48,12 +48,10 @@
 #pragma mark - Actions
 
 - (void)startButtonPressed:(id)sender {
-    NSArray *URLs = [[NSArray alloc] initWithObjects:
-                     [NSURL URLWithString:@"http://farm4.staticflickr.com/3159/3019874112_769b607d2f.jpg"],
+    NSArray *URLs = @[[NSURL URLWithString:@"http://farm4.staticflickr.com/3159/3019874112_769b607d2f.jpg"],
                      [NSURL URLWithString:@"http://farm8.staticflickr.com/7026/6793115731_f22b97df92.jpg"],
                      [NSURL URLWithString:@"http://farm1.staticflickr.com/9/77539733_e64a5917a1.jpg"],
-                     [NSURL URLWithString:@"http://farm3.staticflickr.com/2361/2351000967_245c4d028d.jpg"],
-                     nil];
+                     [NSURL URLWithString:@"http://farm3.staticflickr.com/2361/2351000967_245c4d028d.jpg"]];
     
     self.queue = [[MUKURLConnectionQueue alloc] init];
     self.queue.maximumConcurrentConnections = 2;
@@ -82,7 +80,7 @@
             NSData *data = [weakConnection bufferedData];
             UIImage *image = [[UIImage alloc] initWithData:data];
             NSLog(@"Image %i received", idx);
-            [[self.imageViews objectAtIndex:idx] setImage:image];
+            [(self.imageViews)[idx] setImage:image];
         };
         
         [self.queue addConnection:connection];

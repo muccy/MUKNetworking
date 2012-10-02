@@ -82,7 +82,7 @@
             [weakSelf.navigationController pushViewController:viewController animated:YES];
         }];
         
-        rowsData_ = [[NSArray alloc] initWithObjects:URLConnectionRow, bufferedDownloadRow, backgroundDownloadRow, queueRow, nil];
+        rowsData_ = @[URLConnectionRow, bufferedDownloadRow, backgroundDownloadRow, queueRow];
     }
     
     return rowsData_;
@@ -110,7 +110,7 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    RootTableViewControllerRowData_ *rowData = [self.rowsData_ objectAtIndex:indexPath.row];
+    RootTableViewControllerRowData_ *rowData = (self.rowsData_)[indexPath.row];
     
     cell.textLabel.text = rowData.title;
     cell.detailTextLabel.text = rowData.subtitle;
@@ -122,7 +122,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RootTableViewControllerRowData_ *rowData = [self.rowsData_ objectAtIndex:indexPath.row];
+    RootTableViewControllerRowData_ *rowData = (self.rowsData_)[indexPath.row];
     
     if (rowData.selectionHandler) {
         rowData.selectionHandler();

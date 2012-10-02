@@ -58,7 +58,7 @@
     if (connection_ == nil) {
         self.connection = [self createConnection];
         
-        __unsafe_unretained MUKURLConnection *weakConnection = connection_;
+        __weak MUKURLConnection *weakConnection = connection_;
         [self attachHandlersToConnection:weakConnection];
     }
     return connection_;

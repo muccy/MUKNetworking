@@ -53,9 +53,9 @@
     return connection;
 }
 
-- (void)attachHandlersToConnection:(__unsafe_unretained MUKURLConnection *)connection 
+- (void)attachHandlersToConnection:(__weak MUKURLConnection *)connection
 {
-    __unsafe_unretained URLConnectionViewController *weakSelf = self;
+    __weak URLConnectionViewController *weakSelf = self;
     
     __block NSInteger chunkIndex = 0;
     

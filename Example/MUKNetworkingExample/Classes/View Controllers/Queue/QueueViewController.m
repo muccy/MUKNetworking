@@ -76,7 +76,7 @@
         connection.runsInBackground = YES;
         connection.index = idx;
         
-        __unsafe_unretained MUKURLConnection *weakConnection = connection;
+        __weak MUKURLConnection *weakConnection = connection;
         
         connection.completionHandler = ^(BOOL success, NSError *error) {
             NSData *data = [weakConnection bufferedData];

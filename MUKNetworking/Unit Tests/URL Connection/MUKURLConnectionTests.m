@@ -86,7 +86,7 @@
     
     // Tests to be performed
     __block BOOL testsDone = NO;
-    __unsafe_unretained MUKURLConnection *weakConnection = connection;
+    __weak MUKURLConnection *weakConnection = connection;
     
     // Set handler to be tested
     connection.responseHandler = ^(NSURLResponse *response) {        
@@ -127,7 +127,7 @@
     __block BOOL testsDone = NO; 
     __block NSInteger chunkIndex = 0;
     __block long long receivedLength = 0;
-    __unsafe_unretained MUKURLConnection *weakConnection = connection;
+    __weak MUKURLConnection *weakConnection = connection;
     connection.progressHandler = ^(NSData *data, float quota) {
         NSData *expectedChunk = testChunks[chunkIndex];
         
@@ -180,7 +180,7 @@
     long long chunksLength = [expectedData length];
 
     __block BOOL testsDone = NO;
-    __unsafe_unretained MUKURLConnection *weakConnection = connection;
+    __weak MUKURLConnection *weakConnection = connection;
     connection.completionHandler = ^(BOOL success, NSError *error) {        
         STAssertNil(error, @"No error when connection succeeds");
         STAssertTrue(success, @"Real success");
@@ -224,7 +224,7 @@
     
     NSError *expectedError = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorUnknown userInfo:nil];
     
-    __unsafe_unretained MUKURLConnection *weakConnection = connection;
+    __weak MUKURLConnection *weakConnection = connection;
     __block BOOL testsDone = NO;
     connection.completionHandler = ^(BOOL success, NSError *error) {        
         STAssertTrue(error.domain == expectedError.domain && error.code == expectedError.code, @"Error should match with expected one");
@@ -297,7 +297,7 @@
     NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSArray *chunks = @[firstChunk, secondChunk];
     
-    __unsafe_unretained MUKURLConnection *weakConnection = connection;
+    __weak MUKURLConnection *weakConnection = connection;
     
     __block NSInteger chunkIndex = 0;
     __block BOOL progressTestsDone = NO;
@@ -351,7 +351,7 @@
     NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSArray *chunks = @[firstChunk, secondChunk];
     
-    __unsafe_unretained MUKURLConnection *weakConnection = connection;
+    __weak MUKURLConnection *weakConnection = connection;
     __block BOOL progressTestsDone = NO;
     connection.progressHandler = ^(NSData *data, float quota) {      
         STAssertEquals([[weakConnection bufferedData] length], (NSUInteger)0, @"Should not bufferize data");

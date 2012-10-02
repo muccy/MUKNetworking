@@ -26,5 +26,5 @@
  */
 - (MUKURLConnection *)createConnection;
 
-- (void)attachHandlersToConnection:(__unsafe_unretained MUKURLConnection *)connection;
+- (void)attachHandlersToConnection:(__weak MUKURLConnection *)connection;
 @end

@@ -67,8 +67,8 @@
     NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSArray *chunks = @[firstChunk, secondChunk];
     
-    __unsafe_unretained MUKURLConnection *weakConnection1 = connection1;
-    __unsafe_unretained MUKURLConnection *weakConnection2 = connection2;
+    __weak MUKURLConnection *weakConnection1 = connection1;
+    __weak MUKURLConnection *weakConnection2 = connection2;
     
     __block BOOL completion1TestsDone = NO;
     __block NSDate *completion1Date = nil;
@@ -152,8 +152,8 @@
     NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSArray *chunks = @[firstChunk, secondChunk];
     
-    __unsafe_unretained MUKURLConnection *weakConnection1 = connection1;
-    __unsafe_unretained MUKURLConnection *weakConnection2 = connection2;
+    __weak MUKURLConnection *weakConnection1 = connection1;
+    __weak MUKURLConnection *weakConnection2 = connection2;
     
     __block BOOL completion1TestsDone = NO;
     __block NSDate *completion1Date = nil;

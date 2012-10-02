@@ -60,7 +60,7 @@
 
 - (NSArray *)rowsData_ {
     if (rowsData_ == nil) {
-        __unsafe_unretained RootTableViewController *weakSelf = self;
+        __weak RootTableViewController *weakSelf = self;
         
         RootTableViewControllerRowData_ *URLConnectionRow = [RootTableViewControllerRowData_ rowDataWithTitle:@"URL Connection" subtitle:@"usesBuffer = NO" selectionHandler:^{
             URLConnectionViewController *viewController = [[URLConnectionViewController alloc] initWithNibName:nil bundle:nil];

@@ -141,17 +141,23 @@
 #pragma mark - Private
 
 - (void)setupHandlers_ {
-    __unsafe_unretained MUKURLConnectionOperation_ *weakSelf = self;
+    __weak MUKURLConnectionOperation_ *weakSelf = self;
     
     self.connection.operationCancelHandler_ = ^{
         // Called in main queue
-        [weakSelf cancel];
+        if (weakSelf) {
+            MUKURLConnectionOperation_ *strongSelf = weakSelf;
+            [strongSelf cancel];
+        }
     };
     
     self.connection.operationCompletionHandler_ = ^(BOOL success, NSError *error) 
     {
         // Called in main queue
-        [weakSelf finish_];
+        if (weakSelf) {
+            MUKURLConnectionOperation_ *strongSelf = weakSelf;
+            [strongSelf finish_];
+        }
     };
 }
 

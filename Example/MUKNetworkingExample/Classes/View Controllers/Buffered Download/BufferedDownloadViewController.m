@@ -52,9 +52,9 @@
     return download;
 }
 
-- (void)attachHandlersToConnection:(__unsafe_unretained MUKURLConnection *)connection
+- (void)attachHandlersToConnection:(__weak MUKURLConnection *)connection
 {
-    __unsafe_unretained BufferedDownloadViewController *weakSelf = self;
+    __weak BufferedDownloadViewController *weakSelf = self;
     
     __block NSInteger chunksCount = 0;
     

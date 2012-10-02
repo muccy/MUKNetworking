@@ -121,7 +121,7 @@
     // Create two test chunks
     NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-    NSArray *testChunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
+    NSArray *testChunks = @[firstChunk, secondChunk];
     long long chunksLength = [firstChunk length] + [secondChunk length];
     
     __block BOOL testsDone = NO; 
@@ -129,7 +129,7 @@
     __block long long receivedLength = 0;
     __unsafe_unretained MUKURLConnection *weakConnection = connection;
     connection.progressHandler = ^(NSData *data, float quota) {
-        NSData *expectedChunk = [testChunks objectAtIndex:chunkIndex];
+        NSData *expectedChunk = testChunks[chunkIndex];
         
         // Verify data
         NSString *expectedString = [[NSString alloc] initWithData:expectedChunk encoding:NSUTF8StringEncoding];
@@ -173,7 +173,7 @@
     // Create two test chunks
     NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-    NSArray *testChunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
+    NSArray *testChunks = @[firstChunk, secondChunk];
         
     NSMutableData *expectedData = [NSMutableData dataWithData:firstChunk]; 
     [expectedData appendData:secondChunk];
@@ -220,7 +220,7 @@
     // Create two test chunks
     NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-    NSArray *testChunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
+    NSArray *testChunks = @[firstChunk, secondChunk];
     
     NSError *expectedError = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorUnknown userInfo:nil];
     
@@ -295,7 +295,7 @@
     // Setup chunks
     NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-    NSArray *chunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
+    NSArray *chunks = @[firstChunk, secondChunk];
     
     __unsafe_unretained MUKURLConnection *weakConnection = connection;
     
@@ -349,7 +349,7 @@
     // Setup chunks
     NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-    NSArray *chunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
+    NSArray *chunks = @[firstChunk, secondChunk];
     
     __unsafe_unretained MUKURLConnection *weakConnection = connection;
     __block BOOL progressTestsDone = NO;

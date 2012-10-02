@@ -65,7 +65,7 @@
     // Setup chunks
     NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-    NSArray *chunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
+    NSArray *chunks = @[firstChunk, secondChunk];
     
     __unsafe_unretained MUKURLConnection *weakConnection1 = connection1;
     __unsafe_unretained MUKURLConnection *weakConnection2 = connection2;
@@ -144,13 +144,13 @@
     MUKURLConnection *connection1 = [[MUKURLConnection alloc] initWithRequest:request];
     MUKURLConnection *connection2 = [[MUKURLConnection alloc] initWithRequest:request];
     connection2.runsInBackground = YES;
-    NSArray *connections = [[NSArray alloc] initWithObjects:connection1, connection2, nil];
+    NSArray *connections = @[connection1, connection2];
     NSInteger const kConnectionsCount = 2;
     
     // Setup chunks
     NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-    NSArray *chunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
+    NSArray *chunks = @[firstChunk, secondChunk];
     
     __unsafe_unretained MUKURLConnection *weakConnection1 = connection1;
     __unsafe_unretained MUKURLConnection *weakConnection2 = connection2;
@@ -229,13 +229,13 @@
     MUKURLConnection *connection2 = [[MUKURLConnection alloc] initWithRequest:request];
     connection2.runsInBackground = YES;
     MUKURLConnection *cancelledConnection = connection2;
-    NSArray *connections = [[NSArray alloc] initWithObjects:connection1, connection2, nil];
+    NSArray *connections = @[connection1, connection2];
     NSInteger const kConnectionsCount = 2;
     
     // Setup chunks
     NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-    NSArray *chunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
+    NSArray *chunks = @[firstChunk, secondChunk];
     
     [self registerTestURLProtocol];
     [MUKTestURLProtocol setChunksToProduce:chunks];
@@ -291,13 +291,13 @@
     MUKURLConnection *connection1 = [[MUKURLConnection alloc] initWithRequest:request];
     connection1.runsInBackground = YES;
     MUKURLConnection *connection2 = [[MUKURLConnection alloc] initWithRequest:request];
-    NSArray *connections = [[NSArray alloc] initWithObjects:connection1, connection2, nil];
+    NSArray *connections = @[connection1, connection2];
     NSInteger const kConnectionsCount = 2;
     
     // Setup chunks
     NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-    NSArray *chunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
+    NSArray *chunks = @[firstChunk, secondChunk];
     
     [self registerTestURLProtocol];
     [MUKTestURLProtocol setChunksToProduce:chunks];
@@ -345,13 +345,13 @@
     MUKURLConnection *connection1 = [[MUKURLConnection alloc] initWithRequest:request];
     connection1.runsInBackground = YES;
     MUKURLConnection *connection2 = [[MUKURLConnection alloc] initWithRequest:request];
-    NSArray *connections = [[NSArray alloc] initWithObjects:connection1, connection2, nil];
+    NSArray *connections = @[connection1, connection2];
     NSInteger const kConnectionsCount = 2;
     
     // Setup chunks
     NSData *firstChunk = [@"Hello" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSData *secondChunk = [@"World" dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-    NSArray *chunks = [NSArray arrayWithObjects:firstChunk, secondChunk, nil];
+    NSArray *chunks = @[firstChunk, secondChunk];
     
     [self registerTestURLProtocol];
     [MUKTestURLProtocol setChunksToProduce:chunks];
@@ -398,10 +398,8 @@
 - (void)testConnectionsList {
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.apple.com"]];
     
-    NSArray *connections = [[NSArray alloc] initWithObjects:
-                            [[MUKURLConnection alloc] initWithRequest:request],
-                            [[MUKURLConnection alloc] initWithRequest:request],
-                            nil];
+    NSArray *connections = @[[[MUKURLConnection alloc] initWithRequest:request],
+                            [[MUKURLConnection alloc] initWithRequest:request]];
     
     MUKURLConnectionQueue *queue = [[MUKURLConnectionQueue alloc] init];
     queue.suspended = YES;
@@ -411,7 +409,7 @@
     __block NSUInteger count = 0;
     [[queue connections] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) 
     {
-        MUKURLConnection *expectedConnection = [connections objectAtIndex:idx];
+        MUKURLConnection *expectedConnection = connections[idx];
         STAssertEqualObjects(expectedConnection, obj, nil);
         count++;
     }];
